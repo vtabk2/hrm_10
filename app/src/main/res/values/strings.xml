@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">hrm_10</string>
+    <string name="setting">Setting</string>
+    <string name="user">User Name</string>
+    <string name="pass">Password</string>
+    <string name="edit">Edit Staff</string>
+    <string name="add">Add Staff</string>
+    <string name="login1">Login in with admin</string>
+    <string name="login2">Logged in successfully</string>
+    <string name="login3">Login failed</string>
+    <string name="create">Create an Account"</string>
+    <string name="singin">Sign in"</string>
+
 </resources>
