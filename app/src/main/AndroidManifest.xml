@@ -14,5 +14,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ListDepartmentsActivity" />
+        <activity android:name=".view.ListStaffActivity"/>
     </application>
 </manifest>
