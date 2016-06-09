@@ -22,7 +22,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignRight="@+id/edit_username"
             android:layout_marginTop="@dimen/image_activity_marginTop"
-            android:src="@drawable/logo" />
+            android:src="@drawable/img_login" />
 
         <TextView
             android:id="@+id/text_name_app"

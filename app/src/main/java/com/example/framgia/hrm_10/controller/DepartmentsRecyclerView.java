@@ -1,4 +1,4 @@
-package com.example.framgia.hrm_10.model;
+package com.example.framgia.hrm_10.controller;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,13 +6,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.framgia.hrm_10.R;
+import com.example.framgia.hrm_10.model.Departments;
 import java.util.List;
 /**
  * Created by framgia on 07/06/2016.
  */
-public class DataRecyclerView extends RecyclerView.Adapter<DataRecyclerView.MyViewHolder> {
+public class DepartmentsRecyclerView extends RecyclerView.Adapter<DepartmentsRecyclerView.MyViewHolder> {
     private List<Departments> mList;
-    public DataRecyclerView(List<Departments> list) {
+    public DepartmentsRecyclerView(List<Departments> list) {
         this.mList = list;
     }
     @Override

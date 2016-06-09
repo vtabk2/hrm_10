@@ -5,18 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.example.framgia.hrm_10.model.Departments;
+import com.example.framgia.hrm_10.model.Staff;
 import java.util.ArrayList;
 import java.util.List;
 /**
  * Created by framgia on 02/06/2016.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    public static final int LOGIN_WITH_ADMIN = 1;
-    public static final int LOGIN_NORMAL = 2;
-    public static final int LOGIN_FAILED = 0;
-    public static final int DATABASE_NULL = 0;
-    public static final String ADMIN = "admin";
-    // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name
@@ -31,12 +26,16 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String KEY_ID_DEPARTMENT = "id";
     private static final String KEY_NAME_DEPARTMENT = "name";
     private static final String KEY_ID_IMAGE_DEPARTMENT = "image";
-    // db test
-    public static final String DEPARTMENT1="Departments O1";
-    public static final String DEPARTMENT2="Departments O2";
-    public static final String DEPARTMENT3="Departments O9";
-    public static final String DEPARTMENT4="Departments O5";
-
+    // STAFF Table Columns names
+    private static final String KEY_ID_STAFF = "id";
+    private static final String KEY_NAME_STAFF = "name";
+    private static final String KEY_PLACE_OF_BIRTH_STAFF = "placeOfBirth";
+    private static final String KEY_BIRTHDAY_STAFF = "birthday";
+    private static final String KEY_PHONE_STAFF = "phone";
+    private static final String KEY_ID_POSITION_IN_COMPANY_STAFF = "idPositionInCompany";
+    private static final String KEY_ID_STATUS_STAFF = "idStatus";
+    private static final String KEY_LEFT_JOB_STAFF = "letJob";
+    //
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -48,6 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DEPARTMENT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STAFF);
         // Create tables again
         onCreate(db);
     }
@@ -57,10 +57,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 + KEY_ID_DEPARTMENT + " INTEGER PRIMARY KEY," + KEY_NAME_DEPARTMENT + " TEXT,"
                 + KEY_ID_IMAGE_DEPARTMENT + " INTEGER" + ")";
         db.execSQL(CREATE_TABLE_DEPARTMENT);
+        // table staff
+        String CREATE_TABLE_STAFF = "CREATE TABLE " + TABLE_STAFF + "("
+                + KEY_ID_STAFF + " INTEGER PRIMARY KEY," + KEY_NAME_STAFF + " TEXT,"
+                + KEY_PLACE_OF_BIRTH_STAFF + " TEXT," + KEY_BIRTHDAY_STAFF + " TEXT,"
+                + KEY_PHONE_STAFF + " TEXT," + KEY_ID_POSITION_IN_COMPANY_STAFF + " INTEGER,"
+                + KEY_ID_STATUS_STAFF + " INTEGER," + KEY_LEFT_JOB_STAFF + " INTEGER" + ")";
+        db.execSQL(CREATE_TABLE_STAFF);
     }
-    /**
-     * All CRUD(Create, Read, Update, Delete) Operations
-     */
+    // Department
     // Adding new department
     public void addDepartment(Departments departments) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -71,27 +76,44 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(TABLE_DEPARTMENT, null, values);
         db.close(); // Closing database connection
     }
-    // Getting single department
+    // Getting name single department
     public String getDepartment(int id) {
+        String name_department = "";
+        String selectQuery = "SELECT  * FROM " + TABLE_DEPARTMENT + " WHERE " + KEY_ID_IMAGE_DEPARTMENT + "=?";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_DEPARTMENT, new String[]{KEY_ID_DEPARTMENT,
-                        KEY_NAME_DEPARTMENT, KEY_ID_IMAGE_DEPARTMENT}, KEY_ID_DEPARTMENT + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"" + id});
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                name_department = cursor.getString(cursor.getColumnIndex(KEY_NAME_DEPARTMENT));
+            }
         }
-        String name_department = cursor.getString(1);
         db.close();
         return name_department;
     }
+    // Getting idDepartment single department
+    public int getDepartment(String nameDepartment) {
+        int id_department = DBTest.ID_NULL;
+        String selectQuery = "SELECT  * FROM " + TABLE_DEPARTMENT + " WHERE " + KEY_NAME_DEPARTMENT + "=?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"" + nameDepartment});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                id_department = cursor.getInt(cursor.getColumnIndex(KEY_ID_DEPARTMENT));
+            }
+        }
+        db.close();
+        return id_department;
+    }
     // Getting department Count
     public int getDepartmentCount() {
+        int count = DBTest.COUNT_NULL;
         String countQuery = "SELECT  * FROM " + TABLE_DEPARTMENT;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        int count=cursor.getCount();
+        if (cursor != null) {
+            count = cursor.getCount();
+        }
         db.close();
-        // return count
         return count;
     }
     // Getting All Departments
@@ -104,10 +126,9 @@ public class DBHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Departments departments = new Departments();
-                departments.setId(cursor.getInt(0));
-                departments.setName(cursor.getString(1));
-                departments.setIdImage(cursor.getInt(2));
+                Departments departments = new Departments(cursor.getInt(cursor.getColumnIndex(KEY_ID_DEPARTMENT)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME_DEPARTMENT)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID_IMAGE_DEPARTMENT)));
                 // Adding departments to list
                 departmentsList.add(departments);
             } while (cursor.moveToNext());
@@ -116,8 +137,79 @@ public class DBHelper extends SQLiteOpenHelper {
         // return departments list
         return departmentsList;
     }
-    // login
-    public int login(String name, String pass) {
-        return LOGIN_WITH_ADMIN;
+    // Staff
+    // Adding new staff
+    public void addStaff(Staff staff) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME_STAFF, staff.getName());
+        values.put(KEY_PLACE_OF_BIRTH_STAFF, staff.getPlaceOfBirth());
+        values.put(KEY_BIRTHDAY_STAFF, staff.getBirthday());
+        values.put(KEY_PHONE_STAFF, staff.getPhone());
+        values.put(KEY_ID_POSITION_IN_COMPANY_STAFF, staff.getIdPositionInCompany());
+        values.put(KEY_ID_STATUS_STAFF, staff.getIdStatus());
+        values.put(KEY_LEFT_JOB_STAFF, staff.getLeftJob());
+        // Inserting Row
+        db.insert(TABLE_STAFF, null, values);
+        db.close(); // Closing database connection
+    }
+    // Getting single staff
+    public Staff getStaff(int id) {
+        Staff staff = null;
+        String selectQuery = "SELECT  * FROM " + TABLE_STAFF + " WHERE " + KEY_ID_STAFF + "=?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"" + id});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                staff = new Staff(cursor.getInt(cursor.getColumnIndex(KEY_ID_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(KEY_PLACE_OF_BIRTH_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(KEY_BIRTHDAY_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(KEY_PHONE_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID_POSITION_IN_COMPANY_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID_STATUS_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_LEFT_JOB_STAFF)));
+            }
+        }
+        db.close();
+        return staff;
+    }
+    // Getting staff Count
+    public int getStaffCount() {
+        int count = DBTest.COUNT_NULL;
+        String countQuery = "SELECT  * FROM " + TABLE_STAFF;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        if (cursor != null) {
+            count = cursor.getCount();
+        }
+        db.close();
+        return count;
+    }
+    // Getting All Staffs for Department
+    public List<Staff> getAllStaffs(int idDepartment) {
+        List<Staff> staffList = new ArrayList<Staff>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_STAFF + " WHERE " + KEY_ID_POSITION_IN_COMPANY_STAFF + "=?";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"" + idDepartment});
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Staff staff = new Staff(cursor.getInt(cursor.getColumnIndex(KEY_ID_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(KEY_PLACE_OF_BIRTH_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(KEY_BIRTHDAY_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(KEY_PHONE_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID_POSITION_IN_COMPANY_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID_STATUS_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_LEFT_JOB_STAFF)));
+                // Adding departments to list
+                staffList.add(staff);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        // return departments list
+        return staffList;
     }
 }
