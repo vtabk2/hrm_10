@@ -32,6 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String _name = mName.getText().toString();
         String _pass = mPass.getText().toString();
         Toast.makeText(getBaseContext(), R.string.login1, Toast.LENGTH_LONG).show();
-        startActivity(new Intent(getBaseContext(), ListDepartmentsActivity.class));
+        startActivity(new Intent(getBaseContext(), ListDepartmentStaffActivity.class));
     }
 }

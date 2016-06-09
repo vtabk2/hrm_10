@@ -7,4 +7,11 @@
     <dimen name="image_activity_marginTop">50dp</dimen>
     <dimen name="text_list_department_vi_marginTop">15dp</dimen>
     <dimen name="image_list_department_vi_marginTop">15dp</dimen>
+    <dimen name="image_list_staff_vi_marginTop">20dp</dimen>
+    <dimen name="image_list_staff_vi_marginLeft">20dp</dimen>
+    <dimen name="text_list_staff_vi_marginLeft">40dp</dimen>
+    <dimen name="text_list_staff_vi_marginTop">40dp</dimen>
+    <dimen name="image_list_staff_vi_width">80dp</dimen>
+    <dimen name="image_list_staff_vi_height">80dp</dimen>
+    <dimen name="image_list_department_vi_height">236dp</dimen>
 </resources>
