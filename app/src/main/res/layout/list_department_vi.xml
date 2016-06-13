@@ -15,9 +15,10 @@
 
     <ImageView
         android:id="@+id/image_department"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_list_department_vi_height"
         android:layout_below="@+id/text_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/image_list_department_vi_marginTop" />
+        android:layout_marginTop="@dimen/image_list_department_vi_marginTop"
+        android:scaleType="centerCrop" />
 </RelativeLayout>
