@@ -1,17 +1,21 @@
 package com.example.framgia.hrm_10.controller;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.framgia.hrm_10.R;
 import com.example.framgia.hrm_10.model.Departments;
 import com.example.framgia.hrm_10.model.OnClickItemListener;
 import com.example.framgia.hrm_10.model.Staff;
+
 import java.util.List;
+
 /**
  * Created by framgia on 07/06/2016.
  */
@@ -22,21 +26,26 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
     private List<Staff> mStaffList;
     private int type;
     private OnClickItemListener mOnClickItemListener;
+
     public DataRecyclerViewAdapter(List<Staff> staffList, int typeStaff) {
         this.mStaffList = staffList;
         this.type = typeStaff;
     }
+
     public DataRecyclerViewAdapter(List<Departments> departmentsList) {
         this.mDepartmentList = departmentsList;
         this.type = TYPE_DEPARTMENT;
     }
+
     @Override
     public int getItemViewType(int position) {
         return type;
     }
+
     public void setOnClickItemListener(OnClickItemListener mOnClickItemListener) {
         this.mOnClickItemListener = mOnClickItemListener;
     }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (type) {
@@ -54,6 +63,7 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
                 return new MyViewHolder(itemView);
         }
     }
+
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.mImage.setImageDrawable(null);
@@ -67,7 +77,6 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.mImage);
                 holder.mName.setText(departments.getName());
-
                 break;
             case TYPE_STAFF:
                 Staff staff = mStaffList.get(position);
@@ -97,6 +106,7 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
             }
         });
     }
+
     @Override
     public int getItemCount() {
         switch (type) {
@@ -108,9 +118,11 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
                 return 0;
         }
     }
+
     protected class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView mName;
         public ImageView mImage;
+
         public MyViewHolder(final View view) {
             super(view);
             switch (type) {
