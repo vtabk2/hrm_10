@@ -1,4 +1,5 @@
 package com.example.framgia.hrm_10.model;
+
 /**
  * Created by framgia on 08/06/2016.
  */
@@ -11,6 +12,7 @@ public class Staff {
     private int mIdPositionInCompany;
     private int mIdStatus;
     private int mLeftJob;
+
     public Staff(int id, String name, String placeOfBirth,
                  String birthday, String phone, int idPositionInCompany,
                  int idStatus, int leftJob) {
@@ -23,6 +25,7 @@ public class Staff {
         this.mIdStatus = idStatus;
         this.mLeftJob = leftJob;
     }
+
     public Staff(String name, String placeOfBirth,
                  String birthday, String phone, int idPositionInCompany,
                  int idStatus, int leftJob) {
@@ -34,27 +37,35 @@ public class Staff {
         this.mIdStatus = idStatus;
         this.mLeftJob = leftJob;
     }
+
     public int getId() {
         return mId;
     }
+
     public String getName() {
         return mName;
     }
+
     public String getPlaceOfBirth() {
         return mPlaceOfBirth;
     }
+
     public String getBirthday() {
         return mBirthday;
     }
+
     public String getPhone() {
         return mPhone;
     }
+
     public int getIdPositionInCompany() {
         return mIdPositionInCompany;
     }
+
     public int getIdStatus() {
         return mIdStatus;
     }
+
     public int getLeftJob() {
         return mLeftJob;
     }

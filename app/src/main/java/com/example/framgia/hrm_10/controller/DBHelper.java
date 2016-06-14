@@ -110,7 +110,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Getting idDepartment single department
     public int getDepartment(String nameDepartment) {
-        int id_department = DBTest.ID_NULL;
+        int id_department = Settings.ID_NULL;
         String selectQuery = "SELECT  * FROM " + TABLE_DEPARTMENT + " WHERE " + KEY_NAME_DEPARTMENT + "=?";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{"" + nameDepartment});
@@ -123,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Getting department Count
     public int getDepartmentCount() {
-        int count = DBTest.COUNT_NULL;
+        int count = Settings.COUNT_NULL;
         String countQuery = "SELECT  * FROM " + TABLE_DEPARTMENT;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
@@ -195,7 +195,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Getting staff Count
     public int getStaffCount() {
-        int count = DBTest.COUNT_NULL;
+        int count = Settings.COUNT_NULL;
         String countQuery = "SELECT  * FROM " + TABLE_STAFF;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
@@ -255,5 +255,36 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         db.close();
         return type_status;
+    }
+
+    // Getting All Status
+    public List<Status> getAllStatus() {
+        List<Status> statusList = new ArrayList<Status>();
+        String selectQuery = "SELECT  * FROM " + TABLE_STATUS;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Status status = new Status(cursor.getInt(cursor.getColumnIndex(KEY_ID_STATUS)),
+                        cursor.getString(cursor.getColumnIndex(KEY_TYPE_STATUS))
+                );
+                statusList.add(status);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return statusList;
+    }
+
+    // Getting typeStatus
+    public int getStatus(String typeStatus) {
+        int id_status = Settings.ID_NULL;
+        String selectQuery = "SELECT  * FROM " + TABLE_STATUS + " WHERE " + KEY_TYPE_STATUS + "=?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"" + typeStatus});
+        if (cursor != null && cursor.moveToFirst()) {
+            id_status = cursor.getInt(cursor.getColumnIndex(KEY_ID_STATUS));
+        }
+        db.close();
+        return id_status;
     }
 }
