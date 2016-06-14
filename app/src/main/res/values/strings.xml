@@ -3,12 +3,19 @@
     <string name="setting">Setting</string>
     <string name="user">User Name</string>
     <string name="pass">Password</string>
-    <string name="edit">Edit Staff</string>
-    <string name="add">Add Staff</string>
+    <string name="editStaff">Edit Staff</string>
+    <string name="addStaff">Add Staff</string>
     <string name="login1">Login in with admin</string>
     <string name="login2">Logged in successfully</string>
     <string name="login3">Login failed</string>
     <string name="create">Create an Account"</string>
     <string name="singin">Sign in"</string>
+    <string name="nameStaff">Name"</string>
+    <string name="placeofbirth">Place of birth"</string>
+    <string name="birthday">Birthday"</string>
+    <string name="phone">Phone"</string>
+    <string name="positionincompany">Position in company"</string>
+    <string name="status">Status"</string>
+    <string name="submit">Submit"</string>
 
 </resources>
