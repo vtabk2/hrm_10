@@ -173,6 +173,24 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    // Updating single staff
+    public int updateStaff(Staff staff) {
+        int checkupdate = Settings.CHECK_UPDATE_NULL;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME_STAFF, staff.getName());
+        values.put(KEY_PLACE_OF_BIRTH_STAFF, staff.getPlaceOfBirth());
+        values.put(KEY_BIRTHDAY_STAFF, staff.getBirthday());
+        values.put(KEY_PHONE_STAFF, staff.getPhone());
+        values.put(KEY_ID_POSITION_IN_COMPANY_STAFF, staff.getIdPositionInCompany());
+        values.put(KEY_ID_STATUS_STAFF, staff.getIdStatus());
+        values.put(KEY_LEFT_JOB_STAFF, staff.getLeftJob());
+        checkupdate = db.update(TABLE_STAFF, values, KEY_ID_STAFF + " = ?",
+                new String[]{String.valueOf(staff.getId())});
+        db.close();
+        return checkupdate;
+    }
+
     // Getting single staff
     public Staff getStaff(int id) {
         Staff staff = null;

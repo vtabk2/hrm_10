@@ -19,5 +19,6 @@
     <dimen name="edit_activity_staff_marginLeft">20dp</dimen>
     <dimen name="spinner_activity_staff_marginLeft">180dp</dimen>
     <dimen name="button_activity_staff_marginTop">50dp</dimen>
-    <dimen name="cb_activity_staff_marginLeft">30dp</dimen>
+    <dimen name="rd_activity_staff_marginLeft">30dp</dimen>
+    <dimen name="rdGroup_activity_staff_marginLeft">130dp</dimen>
 </resources>

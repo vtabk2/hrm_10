@@ -1,5 +1,6 @@
 package com.example.framgia.hrm_10.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -9,8 +10,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +39,9 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     private Bundle mBundle;
     private int mIdStaff;
     private Spinner mSpinnerStatus, mSpinnerPositionInCompany;
-    private CheckBox mCheckYes, mCheckNo;
+    private RadioGroup mRadioGroupLeftJob;
+    private RadioButton mRadioButtonYes, mRadioButtonNo;
+    private String mTypeSettings;
     private List<String> mStatusList = new ArrayList<String>();
     private List<String> mPositionInCompanyList = new ArrayList<String>();
 
@@ -53,19 +57,21 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     private void createData() {
         mBundle = getIntent().getExtras();
         if (mBundle != null) {
-            String settings = mBundle.getString(Settings.SETTINGS);
+            mTypeSettings = mBundle.getString(Settings.SETTINGS);
             mIdStaff = mBundle.getInt(Settings.ID_STAFF);
-            switch (settings) {
+            switch (mTypeSettings) {
                 case Settings.ADDSTAFF:
-                    setEnableViews(true);
+                    setEnableViews(true, true);
+                    onItemSelectedListener();
                     break;
                 case Settings.EDITSTAFF:
                     showStaff();
-                    setEnableViews(true);
+                    setEnableViews(true, false);
+                    onItemSelectedListener();
                     break;
                 case Settings.SHOWSTAFF:
                     showStaff();
-                    setEnableViews(false);
+                    setEnableViews(false, false);
                     break;
             }
         }
@@ -92,11 +98,38 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         mTextViewBirthday = (TextView) findViewById(R.id.text_birthday);
         mTextViewPositionInCompany = (TextView) findViewById(R.id.text_position_in_company);
         mTextViewStatus = (TextView) findViewById(R.id.text_status);
-        mCheckYes = (CheckBox) findViewById(R.id.cb_Yes);
-        mCheckNo = (CheckBox) findViewById(R.id.cb_No);
         mButtonSubmit.setOnClickListener(this);
         mTextViewBirthday.setOnClickListener(this);
         createSpinnerViews();
+        mRadioGroupLeftJob = (RadioGroup) findViewById(R.id.radioGroup);
+        mRadioButtonYes = (RadioButton) findViewById(R.id.radioButton_Yes);
+        mRadioButtonNo = (RadioButton) findViewById(R.id.radioButton_No);
+    }
+
+
+    private void onItemSelectedListener() {
+        mSpinnerPositionInCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mTextViewPositionInCompany.setText(mPositionInCompanyList.get((int) parent.getItemIdAtPosition(position)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO
+            }
+        });
+        mSpinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mTextViewStatus.setText(mStatusList.get((int) parent.getItemIdAtPosition(position)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //TODO
+            }
+        });
     }
 
     private void createSpinnerViews() {
@@ -111,17 +144,6 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         adapterPositionInCompany.setDropDownViewResource
                 (android.R.layout.simple_list_item_single_choice);
         mSpinnerPositionInCompany.setAdapter(adapterPositionInCompany);
-        mSpinnerPositionInCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mTextViewPositionInCompany.setText(mPositionInCompanyList.get((int) parent.getItemIdAtPosition(position)));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO
-            }
-        });
         // SpinnerStatus
         mSpinnerStatus = (Spinner) findViewById(R.id.spinner_status);
         ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>
@@ -133,37 +155,27 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         adapterStatus.setDropDownViewResource
                 (android.R.layout.simple_list_item_single_choice);
         mSpinnerStatus.setAdapter(adapterStatus);
-        mSpinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mTextViewStatus.setText(mStatusList.get((int) parent.getItemIdAtPosition(position)));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //TODO
-            }
-        });
     }
 
-    private void setEnableViews(boolean enabled) {
+    private void setEnableViews(boolean enabled, boolean add) {
         mEditTextName.setEnabled(enabled);
         mEditTextPlaceOfBirth.setEnabled(enabled);
         mTextViewBirthday.setEnabled(enabled);
         mEditTextPhone.setEnabled(enabled);
         mTextViewPositionInCompany.setEnabled(enabled);
         mTextViewStatus.setEnabled(enabled);
-        mCheckYes.setEnabled(enabled);
-        mCheckNo.setEnabled(enabled);
         mEditTextName.setFocusableInTouchMode(enabled);
         mEditTextName.setClickable(enabled);
+        mRadioButtonYes.setEnabled(enabled);
+        mRadioButtonNo.setEnabled(enabled);
         mButtonSubmit.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
         mSpinnerPositionInCompany.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
         mSpinnerStatus.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
         mTextViewPositionInCompany.setVisibility(enabled ? View.INVISIBLE : View.VISIBLE);
         mTextViewStatus.setVisibility(enabled ? View.INVISIBLE : View.VISIBLE);
-        if (enabled) {
+        if (add) {
             mTextViewBirthday.setText(R.string.birthdayDefault);
+            mRadioButtonNo.setChecked(add);
         }
     }
 
@@ -177,8 +189,8 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
                 mEditTextPhone.setText(staff.getPhone());
                 mTextViewPositionInCompany.setText(mDbHelper.getDepartment(staff.getIdPositionInCompany()));
                 mTextViewStatus.setText(mDbHelper.getStatus(staff.getIdStatus()));
-                mCheckYes.setChecked(staff.getLeftJob() == Settings.LEFT_JOB);
-                mCheckNo.setChecked(staff.getLeftJob() == Settings.NOT_LEFT_JOB);
+                mRadioButtonYes.setChecked(staff.getLeftJob() == Settings.LEFT_JOB);
+                mRadioButtonNo.setChecked(staff.getLeftJob() == Settings.NOT_LEFT_JOB);
             }
         }
     }
@@ -187,11 +199,20 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_submit:
-                if (addStaff()) {
-                    setEnableViews(false);
-                    Toast.makeText(getApplicationContext(), R.string.addSuccessfully, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.addFailed, Toast.LENGTH_LONG).show();
+                if (TextUtils.equals(mTypeSettings, Settings.ADDSTAFF)) {
+                    if (addStaff()) {
+                        setEnableViews(false, false);
+                        showToast(getApplicationContext(), getText(R.string.addSuccessfully));
+                    } else {
+                        showToast(getApplicationContext(), getText(R.string.addFailed));
+                    }
+                } else if (TextUtils.equals(mTypeSettings, Settings.EDITSTAFF)) {
+                    if (editStaff()) {
+                        setEnableViews(false, false);
+                        showToast(getApplicationContext(), getText(R.string.editSuccessfully));
+                    } else {
+                        showToast(getApplicationContext(), getText(R.string.editFailed));
+                    }
                 }
                 break;
             case R.id.text_birthday:
@@ -200,15 +221,31 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void showToast(Context context, CharSequence charSequence) {
+        Toast.makeText(context, charSequence, Toast.LENGTH_LONG).show();
+    }
+
     private int checkLeftJob() {
-        if (mCheckYes.isChecked()) {
-            return Settings.LEFT_JOB;
+        int idChecked = mRadioGroupLeftJob.getCheckedRadioButtonId();
+        return idChecked == R.id.radioButton_Yes ? Settings.LEFT_JOB : Settings.NOT_LEFT_JOB;
+    }
+
+    private boolean editStaff() {
+        if (checkStaffNull()) {
+            Staff staff = new Staff(mIdStaff, mEditTextName.getText().toString(),
+                    mEditTextPlaceOfBirth.getText().toString(),
+                    mTextViewBirthday.getText().toString(),
+                    mEditTextPhone.getText().toString(),
+                    mDbHelper.getDepartment(mTextViewPositionInCompany.getText().toString()),
+                    mDbHelper.getStatus(mTextViewStatus.getText().toString()),
+                    checkLeftJob());
+            return mDbHelper.updateStaff(staff) > Settings.CHECK_UPDATE_TRUE ? true : false;
         }
-        return Settings.NOT_LEFT_JOB;
+        return false;
     }
 
     private boolean addStaff() {
-        if (checkAddStaffNull()) {
+        if (checkStaffNull()) {
             Staff staff = new Staff(mEditTextName.getText().toString(),
                     mEditTextPlaceOfBirth.getText().toString(),
                     mTextViewBirthday.getText().toString(),
@@ -221,10 +258,10 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         return false;
     }
 
-    private boolean checkAddStaffNull() {
+    private boolean checkStaffNull() {
         if (!TextUtils.isEmpty(mEditTextName.getText().toString())
                 && !TextUtils.isEmpty(mEditTextPlaceOfBirth.getText().toString())
-                && mTextViewBirthday.getText().toString().equals(R.string.birthdayDefault)
+                && !TextUtils.equals(mTextViewBirthday.getText().toString(), getText(R.string.birthdayDefault))
                 && !TextUtils.isEmpty(mEditTextPhone.getText().toString())) {
             return true;
         }

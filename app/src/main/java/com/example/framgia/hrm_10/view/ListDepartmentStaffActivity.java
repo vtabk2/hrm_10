@@ -107,7 +107,16 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
 
     @Override
     public void onLongClickItem(View view, int position) {
-        //TODO
+        int type = mAdapter.getItemViewType(position);
+        if (type == DataRecyclerViewAdapter.TYPE_STAFF) {
+            Bundle dataBundle = new Bundle();
+            dataBundle = new Bundle();
+            dataBundle.putInt("" + Settings.ID_STAFF, mListStaff.get(position).getId());
+            dataBundle.putString(Settings.SETTINGS, Settings.EDITSTAFF);
+            Intent intent = new Intent(getApplicationContext(), StaffActivity.class);
+            intent.putExtras(dataBundle);
+            startActivity(intent);
+        }
     }
 
     @Override
