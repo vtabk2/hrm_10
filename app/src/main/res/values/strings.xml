@@ -17,5 +17,10 @@
     <string name="positionincompany">Position in company"</string>
     <string name="status">Status"</string>
     <string name="submit">Submit"</string>
-
+    <string name="birthdayDefault">20/06/1992"</string>
+    <string name="cbNo">No"</string>
+    <string name="cbYes">Yes"</string>
+    <string name="leftjob">Left-Job"</string>
+    <string name="addFailed">addStaff failed"</string>
+    <string name="addSuccessfully">addStaff successfully"</string>
 </resources>

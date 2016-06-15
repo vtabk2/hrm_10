@@ -4,29 +4,42 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.framgia.hrm_10.R;
 import com.example.framgia.hrm_10.controller.DBHelper;
-import com.example.framgia.hrm_10.controller.DBTest;
 import com.example.framgia.hrm_10.controller.DatePickerFragment;
+import com.example.framgia.hrm_10.controller.Settings;
+import com.example.framgia.hrm_10.model.Departments;
 import com.example.framgia.hrm_10.model.Staff;
+import com.example.framgia.hrm_10.model.Status;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by framgia on 09/06/2016.
  */
 public class StaffActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText mName, mPhone, mPlaceOfBirth;
-    private TextView mBirthday, mPositionInCompany, mStatus;
-    private Button mSubmit;
+    private EditText mEditTextName, mEditTextPhone, mEditTextPlaceOfBirth;
+    private TextView mTextViewBirthday, mTextViewPositionInCompany, mTextViewStatus;
+    private Button mButtonSubmit;
     private DBHelper mDbHelper;
-    private Bundle mExtras;
+    private Bundle mBundle;
     private int mIdStaff;
     private Spinner mSpinnerStatus, mSpinnerPositionInCompany;
+    private CheckBox mCheckYes, mCheckNo;
+    private List<String> mStatusList = new ArrayList<String>();
+    private List<String> mPositionInCompanyList = new ArrayList<String>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,57 +51,135 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createData() {
-        mExtras = getIntent().getExtras();
-        if (mExtras != null) {
-            mIdStaff = mExtras.getInt(DBTest.ID_STAFF);
-            if (mIdStaff > DBTest.ID_STAFF_NULL) {
-                showStaff();
-                // enabled text button edit
-                setEnableViews(false);
+        mBundle = getIntent().getExtras();
+        if (mBundle != null) {
+            String settings = mBundle.getString(Settings.SETTINGS);
+            mIdStaff = mBundle.getInt(Settings.ID_STAFF);
+            switch (settings) {
+                case Settings.ADDSTAFF:
+                    setEnableViews(true);
+                    break;
+                case Settings.EDITSTAFF:
+                    showStaff();
+                    setEnableViews(true);
+                    break;
+                case Settings.SHOWSTAFF:
+                    showStaff();
+                    setEnableViews(false);
+                    break;
             }
         }
     }
 
     private void initDbHelper() {
         mDbHelper = new DBHelper(this);
+        List<Status> statusList = mDbHelper.getAllStatus();
+        for (Status status : statusList) {
+            mStatusList.add(status.getTypeStatus());
+        }
+        List<Departments> departmentsList = mDbHelper.getAllDepartments();
+        for (Departments departments : departmentsList) {
+            mPositionInCompanyList.add(departments.getName());
+        }
     }
 
     private void initViews() {
-        mExtras = getIntent().getExtras();
-        mName = (EditText) findViewById(R.id.edit_name_staff);
-        mPlaceOfBirth = (EditText) findViewById(R.id.edit_place_of_birth);
-        mPhone = (EditText) findViewById(R.id.edit_phone);
-        mSubmit = (Button) findViewById(R.id.button_submit);
-        mBirthday = (TextView) findViewById(R.id.text_birthday);
-        mPositionInCompany = (TextView) findViewById(R.id.text_position_in_company);
-        mStatus = (TextView) findViewById(R.id.text_status);
-        mSubmit.setOnClickListener(this);
-        mBirthday.setOnClickListener(this);
+        mBundle = getIntent().getExtras();
+        mEditTextName = (EditText) findViewById(R.id.edit_name_staff);
+        mEditTextPlaceOfBirth = (EditText) findViewById(R.id.edit_place_of_birth);
+        mEditTextPhone = (EditText) findViewById(R.id.edit_phone);
+        mButtonSubmit = (Button) findViewById(R.id.button_submit);
+        mTextViewBirthday = (TextView) findViewById(R.id.text_birthday);
+        mTextViewPositionInCompany = (TextView) findViewById(R.id.text_position_in_company);
+        mTextViewStatus = (TextView) findViewById(R.id.text_status);
+        mCheckYes = (CheckBox) findViewById(R.id.cb_Yes);
+        mCheckNo = (CheckBox) findViewById(R.id.cb_No);
+        mButtonSubmit.setOnClickListener(this);
+        mTextViewBirthday.setOnClickListener(this);
+        createSpinnerViews();
+    }
+
+    private void createSpinnerViews() {
+        // SpinnerPositionInCompany
+        mSpinnerPositionInCompany = (Spinner) findViewById(R.id.spinner_position_in_company);
+        ArrayAdapter<String> adapterPositionInCompany = new ArrayAdapter<String>
+                (
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        mPositionInCompanyList
+                );
+        adapterPositionInCompany.setDropDownViewResource
+                (android.R.layout.simple_list_item_single_choice);
+        mSpinnerPositionInCompany.setAdapter(adapterPositionInCompany);
+        mSpinnerPositionInCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mTextViewPositionInCompany.setText(mPositionInCompanyList.get((int) parent.getItemIdAtPosition(position)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO
+            }
+        });
+        // SpinnerStatus
+        mSpinnerStatus = (Spinner) findViewById(R.id.spinner_status);
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>
+                (
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        mStatusList
+                );
+        adapterStatus.setDropDownViewResource
+                (android.R.layout.simple_list_item_single_choice);
+        mSpinnerStatus.setAdapter(adapterStatus);
+        mSpinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mTextViewStatus.setText(mStatusList.get((int) parent.getItemIdAtPosition(position)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //TODO
+            }
+        });
     }
 
     private void setEnableViews(boolean enabled) {
+        mEditTextName.setEnabled(enabled);
+        mEditTextPlaceOfBirth.setEnabled(enabled);
+        mTextViewBirthday.setEnabled(enabled);
+        mEditTextPhone.setEnabled(enabled);
+        mTextViewPositionInCompany.setEnabled(enabled);
+        mTextViewStatus.setEnabled(enabled);
+        mCheckYes.setEnabled(enabled);
+        mCheckNo.setEnabled(enabled);
+        mEditTextName.setFocusableInTouchMode(enabled);
+        mEditTextName.setClickable(enabled);
+        mButtonSubmit.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        mSpinnerPositionInCompany.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        mSpinnerStatus.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        mTextViewPositionInCompany.setVisibility(enabled ? View.INVISIBLE : View.VISIBLE);
+        mTextViewStatus.setVisibility(enabled ? View.INVISIBLE : View.VISIBLE);
         if (enabled) {
-            // TODO
-        } else {
-            mName.setEnabled(false);
-            mPositionInCompany.setEnabled(false);
-            mBirthday.setEnabled(false);
-            mPhone.setEnabled(false);
-            mPlaceOfBirth.setEnabled(false);
-            mStatus.setEnabled(false);
-            mSubmit.setVisibility(View.INVISIBLE);
+            mTextViewBirthday.setText(R.string.birthdayDefault);
         }
     }
 
     private void showStaff() {
-        Staff staff = mDbHelper.getStaff(mIdStaff);
-        if (staff != null) {
-            mName.setText(staff.getName());
-            mPlaceOfBirth.setText(staff.getPlaceOfBirth());
-            mBirthday.setText(staff.getBirthday());
-            mPhone.setText(staff.getPhone());
-            mPositionInCompany.setText(mDbHelper.getDepartment(staff.getIdPositionInCompany()));
-            mStatus.setText(mDbHelper.getStatus(staff.getIdStatus()));
+        if (mIdStaff > Settings.ID_STAFF_NULL) {
+            Staff staff = mDbHelper.getStaff(mIdStaff);
+            if (staff != null) {
+                mEditTextName.setText(staff.getName());
+                mEditTextPlaceOfBirth.setText(staff.getPlaceOfBirth());
+                mTextViewBirthday.setText(staff.getBirthday());
+                mEditTextPhone.setText(staff.getPhone());
+                mTextViewPositionInCompany.setText(mDbHelper.getDepartment(staff.getIdPositionInCompany()));
+                mTextViewStatus.setText(mDbHelper.getStatus(staff.getIdStatus()));
+                mCheckYes.setChecked(staff.getLeftJob() == Settings.LEFT_JOB);
+                mCheckNo.setChecked(staff.getLeftJob() == Settings.NOT_LEFT_JOB);
+            }
         }
     }
 
@@ -96,7 +187,12 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_submit:
-                //TODO
+                if (addStaff()) {
+                    setEnableViews(false);
+                    Toast.makeText(getApplicationContext(), R.string.addSuccessfully, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.addFailed, Toast.LENGTH_LONG).show();
+                }
                 break;
             case R.id.text_birthday:
                 showTimePickerDialog(view);
@@ -104,8 +200,39 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private int checkLeftJob() {
+        if (mCheckYes.isChecked()) {
+            return Settings.LEFT_JOB;
+        }
+        return Settings.NOT_LEFT_JOB;
+    }
+
+    private boolean addStaff() {
+        if (checkAddStaffNull()) {
+            Staff staff = new Staff(mEditTextName.getText().toString(),
+                    mEditTextPlaceOfBirth.getText().toString(),
+                    mTextViewBirthday.getText().toString(),
+                    mEditTextPhone.getText().toString(),
+                    mDbHelper.getDepartment(mTextViewPositionInCompany.getText().toString()),
+                    mDbHelper.getStatus(mTextViewStatus.getText().toString()), checkLeftJob());
+            mDbHelper.addStaff(staff);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkAddStaffNull() {
+        if (!TextUtils.isEmpty(mEditTextName.getText().toString())
+                && !TextUtils.isEmpty(mEditTextPlaceOfBirth.getText().toString())
+                && mTextViewBirthday.getText().toString().equals(R.string.birthdayDefault)
+                && !TextUtils.isEmpty(mEditTextPhone.getText().toString())) {
+            return true;
+        }
+        return false;
+    }
+
     private void showTimePickerDialog(View view) {
-        DialogFragment showTime = (new DatePickerFragment()).setBirthday(mBirthday);
-        showTime.show(getSupportFragmentManager(), DBTest.DATEPICKER);
+        DialogFragment showTime = (new DatePickerFragment()).setBirthday(mTextViewBirthday);
+        showTime.show(getSupportFragmentManager(), Settings.DATEPICKER);
     }
 }

@@ -8,7 +8,7 @@ import com.example.framgia.hrm_10.model.Status;
 /**
  * Created by framgia on 09/06/2016.
  */
-public class DBTest {
+public class Settings {
     // All Static variables
     public static final int DATABASE_NULL = 0;
     public static final int COUNT_NULL = 0;
@@ -18,6 +18,12 @@ public class DBTest {
     public static final int ID_DEPARTMENT_NULL = 0;
     public static final int ID_STAFF_NULL = 0;
     public static final String DATEPICKER = "datePicker";
+    public static final String ADDSTAFF = "addStaff";
+    public static final String EDITSTAFF = "editStaff";
+    public static final String SHOWSTAFF = "showStaff";
+    public static final String SETTINGS = "Settings";
+    public static final int LEFT_JOB = 1;
+    public static final int NOT_LEFT_JOB = 0;
     // db test
     private static final String DEPARTMENT1 = "Departments O1";
     private static final String DEPARTMENT2 = "Departments O2";
@@ -32,9 +38,7 @@ public class DBTest {
     private static final String BIRTHDAY_STAFF[] = {"29/08/1992", "29/08/1991", "19/08/1989", "29/02/1988", "09/12/1995"};
     private static final String PHONE_STAFF[] = {"0964980253", "0964980253", "0964980253", "0964980253", "0964980253"};
     private static final int ID_POSITION_IN_COMPANY_STAFF[] = {1, 1, 1, 1, 1};
-    private static final int ID_STATUS_STAFF[] = {1, 2, 1, 3, 4};
-    private static final int LEFT_JOB = 1;
-    private static final int NOT_LEFT_JOB = 0;
+    private static final int ID_STATUS_STAFF[] = {1, 2, 1, 3, 1};
     private static final int LEFT_JOB_STAFF[] = {NOT_LEFT_JOB, NOT_LEFT_JOB, LEFT_JOB, NOT_LEFT_JOB, LEFT_JOB};
 
     public static void create(DBHelper mDbHelper) {
