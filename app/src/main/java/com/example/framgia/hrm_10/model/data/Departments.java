@@ -1,4 +1,4 @@
-package com.example.framgia.hrm_10.model;
+package com.example.framgia.hrm_10.model.data;
 
 /**
  * Created by framgia on 07/06/2016.

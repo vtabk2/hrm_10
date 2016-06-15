@@ -21,4 +21,14 @@
     <dimen name="button_activity_staff_marginTop">50dp</dimen>
     <dimen name="rd_activity_staff_marginLeft">30dp</dimen>
     <dimen name="rdGroup_activity_staff_marginLeft">130dp</dimen>
+    <dimen name="text_name_edit_department_marginLeft">15dp</dimen>
+    <dimen name="text_name_edit_department_marginTop">30dp</dimen>
+    <dimen name="edit_edit_department_marginLeft">30dp</dimen>
+    <dimen name="image_view_edit_department_height">236dp</dimen>
+    <dimen name="image_view_edit_department_marginTop">30dp</dimen>
+    <dimen name="button_edit_submit_marginTop">35dp</dimen>
+    <dimen name="image_update_image_department_marginTop">30dp</dimen>
+    <dimen name="text_update_image_marginLeft">20dp</dimen>
+    <dimen name="text_update_image_marginTop">10dp</dimen>
+    <dimen name="image_edit_department_height">236dp</dimen>
 </resources>

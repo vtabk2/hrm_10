@@ -1,4 +1,4 @@
-package com.example.framgia.hrm_10.view;
+package com.example.framgia.hrm_10.view.showstaffdepartment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.framgia.hrm_10.R;
-import com.example.framgia.hrm_10.controller.DBHelper;
-import com.example.framgia.hrm_10.controller.DataRecyclerViewAdapter;
-import com.example.framgia.hrm_10.controller.Settings;
-import com.example.framgia.hrm_10.model.Departments;
-import com.example.framgia.hrm_10.model.OnClickItemListener;
-import com.example.framgia.hrm_10.model.Staff;
+import com.example.framgia.hrm_10.controller.database.DBHelper;
+import com.example.framgia.hrm_10.controller.recyclerviewdata.DataRecyclerViewAdapter;
+import com.example.framgia.hrm_10.controller.settings.Settings;
+import com.example.framgia.hrm_10.model.data.Departments;
+import com.example.framgia.hrm_10.model.data.Staff;
+import com.example.framgia.hrm_10.model.listenner.OnClickItemListener;
+import com.example.framgia.hrm_10.view.editstaffdepartment.StaffActivity;
 
 import java.util.List;
 
@@ -29,9 +30,12 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     private DBHelper mDbHelper;
     private List<Departments> mDepartmentsList;
     private Bundle mBundle;
-    private List<Staff> mListStaff;
+    private List<Staff> mStaffList;
     private RecyclerView mRecyclerView;
     private DataRecyclerViewAdapter mAdapter;
+    private boolean mIscreated;
+    private int mTypeDataRecyclerViewAdapter;
+    private int mIdDepartment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,12 +45,41 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
         checkInitViews();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mIscreated = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mIscreated) {
+            showUpdateViews();
+        }
+    }
+
+    private void showUpdateViews() {
+        switch (mTypeDataRecyclerViewAdapter) {
+            case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
+                mDepartmentsList = mDbHelper.getDbDepartment().getAllDepartments();
+                mAdapter = new DataRecyclerViewAdapter(mDepartmentsList);
+                break;
+            case DataRecyclerViewAdapter.TYPE_STAFF:
+                mStaffList = mDbHelper.getDbStaff().getAllStaffs(mIdDepartment);
+                mAdapter = new DataRecyclerViewAdapter(mStaffList, DataRecyclerViewAdapter.TYPE_STAFF);
+                break;
+        }
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnClickItemListener(this);
+    }
+
     private void checkInitViews() {
         mBundle = getIntent().getExtras();
         if (mBundle != null) {
-            int value = mBundle.getInt(Settings.ID_DEPARTMENT);
-            if (value > Settings.ID_DEPARTMENT_NULL) {
-                mListStaff = mDbHelper.getAllStaffs(value);
+            mIdDepartment = mBundle.getInt(Settings.ID_DEPARTMENT);
+            if (mIdDepartment > Settings.ID_DEPARTMENT_NULL) {
+                mStaffList = mDbHelper.getDbStaff().getAllStaffs(mIdDepartment);
                 initViews(DataRecyclerViewAdapter.TYPE_STAFF);
             }
         } else {
@@ -56,23 +89,25 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
 
     private void initDBHelper() {
         mDbHelper = new DBHelper(this);
+        mDbHelper.createDbDepartment();
+        mDbHelper.createDbStaff();
         int length;
-        length = mDbHelper.getDepartmentCount();
+        length = mDbHelper.getDbDepartment().getDepartmentCount();
         if (length == Settings.DATABASE_NULL) {
-            // create db test
             Settings.create(mDbHelper);
         }
-        mDepartmentsList = mDbHelper.getAllDepartments();
+        mDepartmentsList = mDbHelper.getDbDepartment().getAllDepartments();
     }
 
     private void initViews(final int type) {
+        mTypeDataRecyclerViewAdapter = type;
         mAdapter = null;
         switch (type) {
             case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
                 mAdapter = new DataRecyclerViewAdapter(mDepartmentsList);
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
-                mAdapter = new DataRecyclerViewAdapter(mListStaff, type);
+                mAdapter = new DataRecyclerViewAdapter(mStaffList, type);
                 break;
         }
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -89,14 +124,14 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
         switch (mAdapter.getItemViewType(position)) {
             case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
                 Bundle dataBundle = new Bundle();
-                dataBundle.putInt("" + Settings.ID_DEPARTMENT, mDepartmentsList.get(position).getId());
+                dataBundle.putInt(Settings.ID_DEPARTMENT, mDepartmentsList.get(position).getId());
                 Intent intent = new Intent(getApplicationContext(), ListDepartmentStaffActivity.class);
                 intent.putExtras(dataBundle);
                 startActivity(intent);
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
                 dataBundle = new Bundle();
-                dataBundle.putInt("" + Settings.ID_STAFF, mListStaff.get(position).getId());
+                dataBundle.putInt(Settings.ID_STAFF, mStaffList.get(position).getId());
                 dataBundle.putString(Settings.SETTINGS, Settings.SHOWSTAFF);
                 intent = new Intent(getApplicationContext(), StaffActivity.class);
                 intent.putExtras(dataBundle);
@@ -108,14 +143,18 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     @Override
     public void onLongClickItem(View view, int position) {
         int type = mAdapter.getItemViewType(position);
-        if (type == DataRecyclerViewAdapter.TYPE_STAFF) {
-            Bundle dataBundle = new Bundle();
-            dataBundle = new Bundle();
-            dataBundle.putInt("" + Settings.ID_STAFF, mListStaff.get(position).getId());
-            dataBundle.putString(Settings.SETTINGS, Settings.EDITSTAFF);
-            Intent intent = new Intent(getApplicationContext(), StaffActivity.class);
-            intent.putExtras(dataBundle);
-            startActivity(intent);
+        switch (type) {
+            case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
+                // TODO
+                break;
+            case DataRecyclerViewAdapter.TYPE_STAFF:
+                Bundle dataBundle1 = new Bundle();
+                dataBundle1.putInt(Settings.ID_STAFF, mStaffList.get(position).getId());
+                dataBundle1.putString(Settings.SETTINGS, Settings.EDITSTAFF);
+                Intent intent = new Intent(getApplicationContext(), StaffActivity.class);
+                intent.putExtras(dataBundle1);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -128,13 +167,16 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Bundle dataBundle = new Bundle();
         switch (id) {
             case R.id.addStaff:
-                Bundle dataBundle = new Bundle();
                 dataBundle.putString(Settings.SETTINGS, Settings.ADDSTAFF);
                 Intent intent = new Intent(getBaseContext(), StaffActivity.class);
                 intent.putExtras(dataBundle);
                 startActivity(intent);
+                return true;
+            case R.id.addDepartment:
+                // TODO
                 return true;
             default:
                 return false;

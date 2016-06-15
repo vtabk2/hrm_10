@@ -1,6 +1,5 @@
-package com.example.framgia.hrm_10.view;
+package com.example.framgia.hrm_10.view.editstaffdepartment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -15,15 +14,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.framgia.hrm_10.R;
-import com.example.framgia.hrm_10.controller.DBHelper;
-import com.example.framgia.hrm_10.controller.DatePickerFragment;
-import com.example.framgia.hrm_10.controller.Settings;
-import com.example.framgia.hrm_10.model.Departments;
-import com.example.framgia.hrm_10.model.Staff;
-import com.example.framgia.hrm_10.model.Status;
+import com.example.framgia.hrm_10.controller.database.DBHelper;
+import com.example.framgia.hrm_10.controller.settings.Settings;
+import com.example.framgia.hrm_10.controller.time.DatePickerFragment;
+import com.example.framgia.hrm_10.model.data.Departments;
+import com.example.framgia.hrm_10.model.data.Staff;
+import com.example.framgia.hrm_10.model.data.Status;
+import com.example.framgia.hrm_10.model.utility.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,9 +64,9 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
                     onItemSelectedListener();
                     break;
                 case Settings.EDITSTAFF:
-                    showStaff();
                     setEnableViews(true, false);
                     onItemSelectedListener();
+                    showStaff();
                     break;
                 case Settings.SHOWSTAFF:
                     showStaff();
@@ -79,11 +78,14 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
 
     private void initDbHelper() {
         mDbHelper = new DBHelper(this);
-        List<Status> statusList = mDbHelper.getAllStatus();
+        mDbHelper.createDbDepartment();
+        mDbHelper.createDbStaff();
+        mDbHelper.createDbStatus();
+        List<Status> statusList = mDbHelper.getDbStatus().getAllStatus();
         for (Status status : statusList) {
             mStatusList.add(status.getTypeStatus());
         }
-        List<Departments> departmentsList = mDbHelper.getAllDepartments();
+        List<Departments> departmentsList = mDbHelper.getDbDepartment().getAllDepartments();
         for (Departments departments : departmentsList) {
             mPositionInCompanyList.add(departments.getName());
         }
@@ -101,11 +103,10 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         mButtonSubmit.setOnClickListener(this);
         mTextViewBirthday.setOnClickListener(this);
         createSpinnerViews();
-        mRadioGroupLeftJob = (RadioGroup) findViewById(R.id.radioGroup);
+        mRadioGroupLeftJob = (RadioGroup) findViewById(R.id.radioGroup_Left_Job);
         mRadioButtonYes = (RadioButton) findViewById(R.id.radioButton_Yes);
         mRadioButtonNo = (RadioButton) findViewById(R.id.radioButton_No);
     }
-
 
     private void onItemSelectedListener() {
         mSpinnerPositionInCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -181,14 +182,16 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
 
     private void showStaff() {
         if (mIdStaff > Settings.ID_STAFF_NULL) {
-            Staff staff = mDbHelper.getStaff(mIdStaff);
+            Staff staff = mDbHelper.getDbStaff().getStaff(mIdStaff);
             if (staff != null) {
                 mEditTextName.setText(staff.getName());
                 mEditTextPlaceOfBirth.setText(staff.getPlaceOfBirth());
                 mTextViewBirthday.setText(staff.getBirthday());
                 mEditTextPhone.setText(staff.getPhone());
-                mTextViewPositionInCompany.setText(mDbHelper.getDepartment(staff.getIdPositionInCompany()));
-                mTextViewStatus.setText(mDbHelper.getStatus(staff.getIdStatus()));
+                mTextViewPositionInCompany.setText(mDbHelper.getDbDepartment().getNameDepartment(staff.getIdPositionInCompany()));
+                mTextViewStatus.setText(mDbHelper.getDbStatus().getStatus(staff.getIdStatus()));
+                mSpinnerPositionInCompany.setSelection(staff.getIdPositionInCompany() - 1);
+                mSpinnerStatus.setSelection(staff.getIdStatus() - 1);
                 mRadioButtonYes.setChecked(staff.getLeftJob() == Settings.LEFT_JOB);
                 mRadioButtonNo.setChecked(staff.getLeftJob() == Settings.NOT_LEFT_JOB);
             }
@@ -199,21 +202,7 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_submit:
-                if (TextUtils.equals(mTypeSettings, Settings.ADDSTAFF)) {
-                    if (addStaff()) {
-                        setEnableViews(false, false);
-                        showToast(getApplicationContext(), getText(R.string.addSuccessfully));
-                    } else {
-                        showToast(getApplicationContext(), getText(R.string.addFailed));
-                    }
-                } else if (TextUtils.equals(mTypeSettings, Settings.EDITSTAFF)) {
-                    if (editStaff()) {
-                        setEnableViews(false, false);
-                        showToast(getApplicationContext(), getText(R.string.editSuccessfully));
-                    } else {
-                        showToast(getApplicationContext(), getText(R.string.editFailed));
-                    }
-                }
+                checkSubmit();
                 break;
             case R.id.text_birthday:
                 showTimePickerDialog(view);
@@ -221,8 +210,33 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void showToast(Context context, CharSequence charSequence) {
-        Toast.makeText(context, charSequence, Toast.LENGTH_LONG).show();
+    private void checkSubmit() {
+        switch (mTypeSettings) {
+            case Settings.ADDSTAFF:
+                showAddStaff();
+                break;
+            case Settings.EDITSTAFF:
+                showEditStaff();
+                break;
+        }
+    }
+
+    private void showEditStaff() {
+        if (editStaff()) {
+            setEnableViews(false, false);
+            Utility.showToast(getApplicationContext(), getText(R.string.editSuccessfully));
+        } else {
+            Utility.showToast(getApplicationContext(), getText(R.string.editFailed));
+        }
+    }
+
+    private void showAddStaff() {
+        if (addStaff()) {
+            setEnableViews(false, false);
+            Utility.showToast(getApplicationContext(), getText(R.string.addSuccessfully));
+        } else {
+            Utility.showToast(getApplicationContext(), getText(R.string.addFailed));
+        }
     }
 
     private int checkLeftJob() {
@@ -236,10 +250,10 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
                     mEditTextPlaceOfBirth.getText().toString(),
                     mTextViewBirthday.getText().toString(),
                     mEditTextPhone.getText().toString(),
-                    mDbHelper.getDepartment(mTextViewPositionInCompany.getText().toString()),
-                    mDbHelper.getStatus(mTextViewStatus.getText().toString()),
+                    mDbHelper.getDbDepartment().getIdDepartment(mTextViewPositionInCompany.getText().toString()),
+                    mDbHelper.getDbStatus().getStatus(mTextViewStatus.getText().toString()),
                     checkLeftJob());
-            return mDbHelper.updateStaff(staff) > Settings.CHECK_UPDATE_TRUE ? true : false;
+            return mDbHelper.getDbStaff().updateStaff(staff);
         }
         return false;
     }
@@ -250,9 +264,9 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
                     mEditTextPlaceOfBirth.getText().toString(),
                     mTextViewBirthday.getText().toString(),
                     mEditTextPhone.getText().toString(),
-                    mDbHelper.getDepartment(mTextViewPositionInCompany.getText().toString()),
-                    mDbHelper.getStatus(mTextViewStatus.getText().toString()), checkLeftJob());
-            mDbHelper.addStaff(staff);
+                    mDbHelper.getDbDepartment().getIdDepartment(mTextViewPositionInCompany.getText().toString()),
+                    mDbHelper.getDbStatus().getStatus(mTextViewStatus.getText().toString()), checkLeftJob());
+            mDbHelper.getDbStaff().addStaff(staff);
             return true;
         }
         return false;

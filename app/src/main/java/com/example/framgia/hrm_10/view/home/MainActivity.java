@@ -1,4 +1,4 @@
-package com.example.framgia.hrm_10.view;
+package com.example.framgia.hrm_10.view.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.framgia.hrm_10.R;
+import com.example.framgia.hrm_10.model.utility.Utility;
+import com.example.framgia.hrm_10.view.showstaffdepartment.ListDepartmentStaffActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Button mButtonSignin;
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mEditTextPass = (EditText) findViewById(R.id.edit_password);
         mTextViewCreate = (TextView) findViewById(R.id.text_create);
         mTextViewCreate.setVisibility(View.GONE);
-        // login
         mButtonSignin.setOnClickListener(this);
     }
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         String _name = mEditTextName.getText().toString();
         String _pass = mEditTextPass.getText().toString();
-        Toast.makeText(getApplicationContext(), R.string.login1, Toast.LENGTH_LONG).show();
+        Utility.showToast(getApplicationContext(), getText(R.string.login1));
         startActivity(new Intent(getBaseContext(), ListDepartmentStaffActivity.class));
     }
 }

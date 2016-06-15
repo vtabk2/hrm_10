@@ -1,4 +1,4 @@
-package com.example.framgia.hrm_10.controller;
+package com.example.framgia.hrm_10.controller.recyclerviewdata;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,9 +10,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.framgia.hrm_10.R;
-import com.example.framgia.hrm_10.model.Departments;
-import com.example.framgia.hrm_10.model.OnClickItemListener;
-import com.example.framgia.hrm_10.model.Staff;
+import com.example.framgia.hrm_10.model.data.Departments;
+import com.example.framgia.hrm_10.model.data.Staff;
+import com.example.framgia.hrm_10.model.listenner.OnClickItemListener;
 
 import java.util.List;
 
@@ -50,17 +50,17 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (type) {
             case TYPE_DEPARTMENT:
-                View itemView = LayoutInflater.from(parent.getContext())
+                View viewDepartment = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_department_vi, parent, false);
-                return new MyViewHolder(itemView);
+                return new MyViewHolder(viewDepartment);
             case TYPE_STAFF:
-                View view = LayoutInflater.from(parent.getContext())
+                View viewStaff = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_staff_vi, parent, false);
-                return new MyViewHolder(view);
+                return new MyViewHolder(viewStaff);
             default:
-                itemView = LayoutInflater.from(parent.getContext())
+                viewDepartment = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_department_vi, parent, false);
-                return new MyViewHolder(itemView);
+                return new MyViewHolder(viewDepartment);
         }
     }
 
