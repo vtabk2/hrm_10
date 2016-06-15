@@ -13,6 +13,8 @@ public class Settings {
     public static final int DATABASE_NULL = 0;
     public static final int COUNT_NULL = 0;
     public static final int ID_NULL = -1;
+    public static final int CHECK_UPDATE_NULL = -1;
+    public static final int CHECK_UPDATE_TRUE = 0;
     public static final String ID_DEPARTMENT = "iddepartment";
     public static final String ID_STAFF = "idstaff";
     public static final int ID_DEPARTMENT_NULL = 0;
