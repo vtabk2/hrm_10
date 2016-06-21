@@ -1,7 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.framgia.hrm_10.view.MainActivity">
+    tools:context=".view.home.MainActivity">
+    <item
+        android:id="@+id/addDepartment"
+        android:orderInCategory="100"
+        android:title="@string/addDepartment"
+        app:showAsAction="never" />
     <item
         android:id="@+id/addStaff"
         android:orderInCategory="100"
