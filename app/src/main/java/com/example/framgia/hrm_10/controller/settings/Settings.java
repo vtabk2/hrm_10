@@ -44,13 +44,15 @@ public class Settings {
     public static final long CHECK_ADD_TRUE = 0;
     public static final String ID_DEPARTMENT = "iddepartment";
     public static final String ID_STAFF = "idstaff";
-    public static final int ID_DEPARTMENT_DEFAULT = 0;
+    public static final int ID_DEPARTMENT_DEFAULT = 1;
+    public static final int ID_STAFF_DEFAULT = 1;
     public static final int ID_DEPARTMENT_NULL = 0;
     public static final int ID_STAFF_NULL = 0;
     public static final String DATEPICKER = "datePicker";
     public static final String ADDSTAFF = "addStaff";
     public static final String EDITSTAFF = "editStaff";
     public static final String SHOWSTAFF = "showStaff";
+    public static final String SHOWDEPARTMENT = "showDepartment";
     public static final String SETTINGS = "Settings";
     public static final int LEFT_JOB = 1;
     public static final int NOT_LEFT_JOB = 0;

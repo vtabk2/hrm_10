@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.framgia.hrm_10.R;
+import com.example.framgia.hrm_10.controller.settings.Settings;
 import com.example.framgia.hrm_10.model.utility.Utility;
 import com.example.framgia.hrm_10.view.showstaffdepartment.ListDepartmentStaffActivity;
 
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String _name = mEditTextName.getText().toString();
         String _pass = mEditTextPass.getText().toString();
         Utility.showToast(getApplicationContext(), getText(R.string.login1));
-        startActivity(new Intent(getBaseContext(), ListDepartmentStaffActivity.class));
+        Intent intent = new Intent(getBaseContext(), ListDepartmentStaffActivity.class);
+        intent.putExtra(Settings.SETTINGS, Settings.SHOWDEPARTMENT);
+        startActivity(intent);
     }
 }

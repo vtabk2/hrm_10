@@ -22,5 +22,6 @@
         </activity>
         <activity android:name=".view.showstaffdepartment.ListDepartmentStaffActivity" />
         <activity android:name=".view.editstaffdepartment.StaffActivity" />
+        <activity android:name=".view.editstaffdepartment.DepartmentActivity" />
     </application>
 </manifest>
