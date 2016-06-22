@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.framgia.hrm_10.R;
+import com.example.framgia.hrm_10.controller.database.DBHelper;
 import com.example.framgia.hrm_10.controller.settings.Settings;
 import com.example.framgia.hrm_10.model.utility.Utility;
 import com.example.framgia.hrm_10.view.showstaffdepartment.ListDepartmentStaffActivity;
@@ -17,12 +18,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mButtonSignin;
     private EditText mEditTextName, mEditTextPass;
     private TextView mTextViewCreate;
+    private DBHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initDbHelper();
         initViews();
+    }
+
+    private void initDbHelper() {
+        mDbHelper = new DBHelper(this);
+        mDbHelper.createAccount();
+        mDbHelper.createDbStaff();
+        mDbHelper.createDbStatus();
+        mDbHelper.createDbDepartment();
+        int length = mDbHelper.getDbDepartment().getDepartmentCount();
+        if (length == Settings.DATABASE_NULL) {
+            Settings.create(mDbHelper);
+        }
     }
 
     private void initViews() {
@@ -38,9 +53,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         String _name = mEditTextName.getText().toString();
         String _pass = mEditTextPass.getText().toString();
-        Utility.showToast(getApplicationContext(), getText(R.string.login1));
-        Intent intent = new Intent(getBaseContext(), ListDepartmentStaffActivity.class);
-        intent.putExtra(Settings.SETTINGS, Settings.SHOWDEPARTMENT);
-        startActivity(intent);
+        int login = mDbHelper.getDbAccount().login(_name, _pass);
+        switch (login) {
+            case Settings.LOGIN_ADMIN:
+                Utility.showToast(getApplicationContext(), getText(R.string.login1));
+                Intent intent = new Intent(getBaseContext(), ListDepartmentStaffActivity.class);
+                intent.putExtra(Settings.SETTINGS, Settings.SHOW_DEPARTMENT);
+                startActivity(intent);
+                break;
+            default:
+                showLogError();
+                break;
+        }
+    }
+
+    private void showLogError() {
+        Utility.showToast(getApplicationContext(), getText(R.string.login3));
     }
 }

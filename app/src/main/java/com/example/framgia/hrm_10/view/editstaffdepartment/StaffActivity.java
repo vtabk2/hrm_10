@@ -56,16 +56,16 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         mTypeSettings = getIntent().getStringExtra(Settings.SETTINGS);
         mIdStaff = getIntent().getIntExtra(Settings.ID_STAFF, Settings.ID_STAFF_DEFAULT);
         switch (mTypeSettings) {
-            case Settings.ADDSTAFF:
+            case Settings.ADD_STAFF:
                 setEnableViews(true, true);
                 setOnItemSelectedListener();
                 break;
-            case Settings.EDITSTAFF:
+            case Settings.EDIT_STAFF:
                 setEnableViews(true, false);
                 setOnItemSelectedListener();
                 showStaff();
                 break;
-            case Settings.SHOWSTAFF:
+            case Settings.SHOW_STAFF:
                 showStaff();
                 setEnableViews(false, false);
                 break;
@@ -207,10 +207,10 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
 
     private void checkSubmit() {
         switch (mTypeSettings) {
-            case Settings.ADDSTAFF:
+            case Settings.ADD_STAFF:
                 showAddStaff();
                 break;
-            case Settings.EDITSTAFF:
+            case Settings.EDIT_STAFF:
                 showEditStaff();
                 break;
         }
@@ -279,6 +279,6 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
 
     private void showTimePickerDialog(View view) {
         DialogFragment showTime = (new DatePickerFragment()).setBirthday(mTextViewBirthday);
-        showTime.show(getSupportFragmentManager(), Settings.DATEPICKER);
+        showTime.show(getSupportFragmentManager(), Settings.DATE_PICKER);
     }
 }

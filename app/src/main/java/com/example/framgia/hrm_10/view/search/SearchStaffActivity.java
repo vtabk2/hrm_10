@@ -93,7 +93,7 @@ public class SearchStaffActivity extends AppCompatActivity implements OnClickIte
     public void onClickItem(View view, int position) {
         Intent intent = new Intent(getApplicationContext(), StaffActivity.class);
         intent.putExtra(Settings.ID_STAFF, mStaffList.get(position).getId());
-        intent.putExtra(Settings.SETTINGS, Settings.SHOWSTAFF);
+        intent.putExtra(Settings.SETTINGS, Settings.SHOW_STAFF);
         startActivity(intent);
     }
 
@@ -101,7 +101,7 @@ public class SearchStaffActivity extends AppCompatActivity implements OnClickIte
     public void onLongClickItem(View view, int position) {
         Intent intent = new Intent(getApplicationContext(), StaffActivity.class);
         intent.putExtra(Settings.ID_STAFF, mStaffList.get(position).getId());
-        intent.putExtra(Settings.SETTINGS, Settings.EDITSTAFF);
+        intent.putExtra(Settings.SETTINGS, Settings.EDIT_STAFF);
         startActivity(intent);
     }
 }

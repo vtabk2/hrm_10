@@ -43,10 +43,10 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
         setEnableViews(true);
         mIdImageDepartment = Settings.ID_DEPARTMENT_DEFAULT;
         switch (mTypeSettings) {
-            case Settings.ADDDEPARTMENT:
+            case Settings.ADD_DEPARTMENT:
                 // TODO
                 break;
-            case Settings.EDITDEPARTMENT:
+            case Settings.EDIT_DEPARTMENT:
                 showDepartment();
                 break;
         }
@@ -93,10 +93,10 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
 
     private void checkEditSubmit() {
         switch (mTypeSettings) {
-            case Settings.ADDDEPARTMENT:
+            case Settings.ADD_DEPARTMENT:
                 showAddDepartment();
                 break;
-            case Settings.EDITDEPARTMENT:
+            case Settings.EDIT_DEPARTMENT:
                 showEditDepartment();
                 break;
         }
