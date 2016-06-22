@@ -33,4 +33,5 @@
     <string name="updateimage">Update image</string>
     <string name="NameDepartment">Name department</string>
     <string name="button_edit_submit">Submit</string>
+    <string name="search">Search</string>
 </resources>

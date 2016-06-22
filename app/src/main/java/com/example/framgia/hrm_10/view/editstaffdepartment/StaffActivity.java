@@ -35,7 +35,6 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     private TextView mTextViewBirthday, mTextViewPositionInCompany, mTextViewStatus;
     private Button mButtonSubmit;
     private DBHelper mDbHelper;
-    private Bundle mBundle;
     private int mIdStaff;
     private Spinner mSpinnerStatus, mSpinnerPositionInCompany;
     private RadioGroup mRadioGroupLeftJob;
@@ -54,25 +53,22 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createData() {
-        mBundle = getIntent().getExtras();
-        if (mBundle != null) {
-            mTypeSettings = mBundle.getString(Settings.SETTINGS);
-            mIdStaff = mBundle.getInt(Settings.ID_STAFF);
-            switch (mTypeSettings) {
-                case Settings.ADDSTAFF:
-                    setEnableViews(true, true);
-                    onItemSelectedListener();
-                    break;
-                case Settings.EDITSTAFF:
-                    setEnableViews(true, false);
-                    onItemSelectedListener();
-                    showStaff();
-                    break;
-                case Settings.SHOWSTAFF:
-                    showStaff();
-                    setEnableViews(false, false);
-                    break;
-            }
+        mTypeSettings = getIntent().getStringExtra(Settings.SETTINGS);
+        mIdStaff = getIntent().getIntExtra(Settings.ID_STAFF, Settings.ID_STAFF_DEFAULT);
+        switch (mTypeSettings) {
+            case Settings.ADDSTAFF:
+                setEnableViews(true, true);
+                setOnItemSelectedListener();
+                break;
+            case Settings.EDITSTAFF:
+                setEnableViews(true, false);
+                setOnItemSelectedListener();
+                showStaff();
+                break;
+            case Settings.SHOWSTAFF:
+                showStaff();
+                setEnableViews(false, false);
+                break;
         }
     }
 
@@ -92,7 +88,6 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initViews() {
-        mBundle = getIntent().getExtras();
         mEditTextName = (EditText) findViewById(R.id.edit_name_staff);
         mEditTextPlaceOfBirth = (EditText) findViewById(R.id.edit_place_of_birth);
         mEditTextPhone = (EditText) findViewById(R.id.edit_phone);
@@ -108,7 +103,7 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         mRadioButtonNo = (RadioButton) findViewById(R.id.radioButton_No);
     }
 
-    private void onItemSelectedListener() {
+    private void setOnItemSelectedListener() {
         mSpinnerPositionInCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
