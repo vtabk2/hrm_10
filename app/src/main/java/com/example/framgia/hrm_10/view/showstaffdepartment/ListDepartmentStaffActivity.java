@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.framgia.hrm_10.model.data.Staff;
 import com.example.framgia.hrm_10.model.listenner.OnClickItemListener;
 import com.example.framgia.hrm_10.view.editstaffdepartment.DepartmentActivity;
 import com.example.framgia.hrm_10.view.editstaffdepartment.StaffActivity;
+import com.example.framgia.hrm_10.view.search.SearchStaffActivity;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     private boolean mIscreated;
     private int mTypeDataRecyclerViewAdapter;
     private int mIdDepartment;
+    private SearchView.OnQueryTextListener mSearchViewListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,16 +65,15 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     private void showUpdateViews() {
         switch (mTypeDataRecyclerViewAdapter) {
             case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
-                mDepartmentsList = mDbHelper.getDbDepartment().getAllDepartments();
-                mAdapter = new DataRecyclerViewAdapter(mDepartmentsList);
+                mDepartmentsList.clear();
+                mDepartmentsList.addAll(mDbHelper.getDbDepartment().getAllDepartments());
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
-                mStaffList = mDbHelper.getDbStaff().getAllStaffs(mIdDepartment);
-                mAdapter = new DataRecyclerViewAdapter(mStaffList, DataRecyclerViewAdapter.TYPE_STAFF);
+                mStaffList.clear();
+                mStaffList.addAll(mDbHelper.getDbStaff().getAllStaffs(mIdDepartment));
                 break;
         }
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnClickItemListener(this);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void checkInitViews() {
@@ -94,8 +96,8 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
         mDbHelper = new DBHelper(this);
         mDbHelper.createDbDepartment();
         mDbHelper.createDbStaff();
-        int length;
-        length = mDbHelper.getDbDepartment().getDepartmentCount();
+        mDbHelper.createDbStatus();
+        int length = mDbHelper.getDbDepartment().getDepartmentCount();
         if (length == Settings.DATABASE_NULL) {
             Settings.create(mDbHelper);
         }
@@ -120,6 +122,21 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
         mRecyclerView.setItemAnimator(new SlideInUpAnimator());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnClickItemListener(this);
+        mSearchViewListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(getApplicationContext(), SearchStaffActivity.class);
+                intent.putExtra(Settings.INTENT_DATA, query);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // do nothing
+                return false;
+            }
+        };
     }
 
     @Override
@@ -162,6 +179,9 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setOnQueryTextListener(mSearchViewListener);
         return true;
     }
 

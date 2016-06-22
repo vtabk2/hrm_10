@@ -58,6 +58,7 @@ public class Settings {
     public static final int NOT_LEFT_JOB = 0;
     public static final String EDITDEPARTMENT = "editDepartment";
     public static final String ADDDEPARTMENT = "addDepartment";
+    public static final String INTENT_DATA = "data";
     public static final int ID_IMAGE_DEPARTMENT[] = {R.drawable.img_department1,
             R.drawable.img_department2,
             R.drawable.img_department3,
