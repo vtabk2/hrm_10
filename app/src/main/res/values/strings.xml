@@ -34,4 +34,7 @@
     <string name="NameDepartment">Name department</string>
     <string name="button_edit_submit">Submit</string>
     <string name="search">Search</string>
+    <string name="radioButtonNameStaff">Name staff</string>
+    <string name="radioButtonPhone">Phone</string>
+    <string name="radioButtonDepartment">Department</string>
 </resources>

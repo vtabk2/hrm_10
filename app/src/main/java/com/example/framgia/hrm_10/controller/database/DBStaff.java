@@ -106,7 +106,86 @@ public class DBStaff {
             } while (cursor.moveToNext());
         }
         db.close();
-        // return departments list
+        return staffList;
+    }
+
+    // Getting All Staffs for Department
+    public List<Staff> getListStaffByName(String nameStaff) {
+        List<Staff> staffList = new ArrayList<Staff>();
+        String selectQuery = "SELECT * FROM " + Settings.TABLE_STAFF + " WHERE " + Settings.KEY_NAME_STAFF + " like '%" + nameStaff + "%'";
+        SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Staff staff = new Staff(cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_PLACE_OF_BIRTH_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_BIRTHDAY_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_PHONE_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_POSITION_IN_COMPANY_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STATUS_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_LEFT_JOB_STAFF)));
+                staffList.add(staff);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return staffList;
+    }
+
+    // Getting All Staffs for Department
+    public List<Staff> getListStaffByPhone(String phone) {
+        List<Staff> staffList = new ArrayList<Staff>();
+        String selectQuery = "SELECT * FROM " + Settings.TABLE_STAFF + " WHERE " + Settings.KEY_PHONE_STAFF + " like '%" + phone + "%'";
+        SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Staff staff = new Staff(cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_PLACE_OF_BIRTH_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_BIRTHDAY_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_PHONE_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_POSITION_IN_COMPANY_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STATUS_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_LEFT_JOB_STAFF)));
+                staffList.add(staff);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return staffList;
+    }
+
+    // Getting All Staffs for Department
+    public List<Staff> getListStaffByDepartment(String nameDepartment) {
+        List<Staff> staffList = new ArrayList<Staff>();
+        String selectQuery = "SELECT "
+                + Settings.TABLE_STAFF + "." + Settings.KEY_ID_STAFF + ","
+                + Settings.TABLE_STAFF + "." + Settings.KEY_NAME_STAFF + ","
+                + Settings.TABLE_STAFF + "." + Settings.KEY_PLACE_OF_BIRTH_STAFF + ","
+                + Settings.TABLE_STAFF + "." + Settings.KEY_BIRTHDAY_STAFF + ","
+                + Settings.TABLE_STAFF + "." + Settings.KEY_PHONE_STAFF + ","
+                + Settings.TABLE_STAFF + "." + Settings.KEY_ID_POSITION_IN_COMPANY_STAFF + ","
+                + Settings.TABLE_STAFF + "." + Settings.KEY_ID_STATUS_STAFF + ","
+                + Settings.TABLE_STAFF + "." + Settings.KEY_LEFT_JOB_STAFF
+                + " FROM " + Settings.TABLE_STAFF + "," + Settings.TABLE_DEPARTMENT
+                + " WHERE " + Settings.TABLE_DEPARTMENT + "." + Settings.KEY_NAME_DEPARTMENT
+                + " like '%" + nameDepartment + "%'";
+        SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Staff staff = new Staff(cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_PLACE_OF_BIRTH_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_BIRTHDAY_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_PHONE_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_POSITION_IN_COMPANY_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STATUS_STAFF)),
+                        cursor.getInt(cursor.getColumnIndex(Settings.KEY_LEFT_JOB_STAFF)));
+                staffList.add(staff);
+            } while (cursor.moveToNext());
+        }
+        db.close();
         return staffList;
     }
 }

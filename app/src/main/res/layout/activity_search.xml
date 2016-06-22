@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edit_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:hint="@string/search"
+        android:inputType="textPersonName"
+        android:paddingTop="@dimen/edit_search_activity_paddingTop" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGroup_search"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/radiogroup_search_activity_paddingTop">
+
+        <RadioButton
+            android:id="@+id/radioButton_NameStaff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:text="@string/radioButtonNameStaff" />
+
+        <RadioButton
+            android:id="@+id/radioButton_Phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="@string/radioButtonPhone" />
+
+        <RadioButton
+            android:id="@+id/radioButton_NameDepartment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="@string/radioButtonDepartment" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button_search"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/search" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/recyclerview_search_activity_paddingTop"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

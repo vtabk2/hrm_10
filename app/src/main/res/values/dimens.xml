@@ -31,4 +31,7 @@
     <dimen name="text_update_image_marginLeft">20dp</dimen>
     <dimen name="text_update_image_marginTop">10dp</dimen>
     <dimen name="image_edit_department_height">236dp</dimen>
+    <dimen name="edit_search_activity_paddingTop">40dp</dimen>
+    <dimen name="radiogroup_search_activity_paddingTop">10dp</dimen>
+    <dimen name="recyclerview_search_activity_paddingTop">10dp</dimen>
 </resources>
