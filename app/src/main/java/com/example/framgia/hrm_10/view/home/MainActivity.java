@@ -34,10 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDbHelper.createDbStaff();
         mDbHelper.createDbStatus();
         mDbHelper.createDbDepartment();
-        int length = mDbHelper.getDbDepartment().getDepartmentCount();
-        if (length == Settings.DATABASE_NULL) {
-            Settings.create(mDbHelper);
-        }
     }
 
     private void initViews() {

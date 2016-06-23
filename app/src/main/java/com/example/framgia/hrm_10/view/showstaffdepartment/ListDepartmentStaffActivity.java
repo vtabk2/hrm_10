@@ -216,6 +216,4 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 return false;
         }
     }
-
-
 }
