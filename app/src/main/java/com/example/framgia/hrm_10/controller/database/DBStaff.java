@@ -73,23 +73,14 @@ public class DBStaff {
         return staff;
     }
 
-    // Getting staff Count
-    public int getStaffCount() {
-        int count = Settings.COUNT_NULL;
-        String countQuery = "SELECT  * FROM " + Settings.TABLE_STAFF;
-        SQLiteDatabase db = mSqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        if (cursor != null) {
-            count = cursor.getCount();
-        }
-        db.close();
-        return count;
-    }
-
-    // Getting All Staffs for Department
-    public List<Staff> getAllStaffs(int idDepartment) {
+    // Getting List staff for Department by Id
+    public List<Staff> getListStaffbyIdDepartment(int start, int idDepartment, int limit) {
         List<Staff> staffList = new ArrayList<Staff>();
-        String selectQuery = "SELECT  * FROM " + Settings.TABLE_STAFF + " WHERE " + Settings.KEY_ID_POSITION_IN_COMPANY_STAFF + "=?";
+        String selectQuery = "SELECT  * FROM " + Settings.TABLE_STAFF
+                + " WHERE " + Settings.KEY_ID_POSITION_IN_COMPANY_STAFF + "=?"
+                + " ORDER BY " + Settings.KEY_NAME_STAFF
+                + " LIMIT " + limit
+                + " OFFSET " + start;
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{"" + idDepartment});
         if (cursor != null && cursor.moveToFirst()) {
@@ -110,9 +101,14 @@ public class DBStaff {
     }
 
     // Getting All Staffs for Department
-    public List<Staff> getListStaffByName(String nameStaff) {
+    public List<Staff> getListStaffByName(int start, String nameStaff, int limit) {
         List<Staff> staffList = new ArrayList<Staff>();
-        String selectQuery = "SELECT * FROM " + Settings.TABLE_STAFF + " WHERE " + Settings.KEY_NAME_STAFF + " like '%" + nameStaff + "%'";
+        String selectQuery = "SELECT * FROM " + Settings.TABLE_STAFF
+                + " WHERE " + Settings.KEY_NAME_STAFF
+                + " like '%" + nameStaff + "%'"
+                + " ORDER BY " + Settings.KEY_NAME_STAFF
+                + " LIMIT " + limit
+                + " OFFSET " + start;
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -133,9 +129,14 @@ public class DBStaff {
     }
 
     // Getting All Staffs for Department
-    public List<Staff> getListStaffByPhone(String phone) {
+    public List<Staff> getListStaffByPhone(int start, String phone, int limit) {
         List<Staff> staffList = new ArrayList<Staff>();
-        String selectQuery = "SELECT * FROM " + Settings.TABLE_STAFF + " WHERE " + Settings.KEY_PHONE_STAFF + " like '%" + phone + "%'";
+        String selectQuery = "SELECT * FROM " + Settings.TABLE_STAFF
+                + " WHERE " + Settings.KEY_PHONE_STAFF
+                + " like '%" + phone + "%'"
+                + " ORDER BY " + Settings.KEY_NAME_STAFF
+                + " LIMIT " + limit
+                + " OFFSET " + start;
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -156,7 +157,7 @@ public class DBStaff {
     }
 
     // Getting All Staffs for Department
-    public List<Staff> getListStaffByDepartment(String nameDepartment) {
+    public List<Staff> getListStaffByDepartment(int start, String nameDepartment, int limit) {
         List<Staff> staffList = new ArrayList<Staff>();
         String selectQuery = "SELECT "
                 + Settings.TABLE_STAFF + "." + Settings.KEY_ID_STAFF + ","
@@ -168,8 +169,12 @@ public class DBStaff {
                 + Settings.TABLE_STAFF + "." + Settings.KEY_ID_STATUS_STAFF + ","
                 + Settings.TABLE_STAFF + "." + Settings.KEY_LEFT_JOB_STAFF
                 + " FROM " + Settings.TABLE_STAFF + "," + Settings.TABLE_DEPARTMENT
-                + " WHERE " + Settings.TABLE_DEPARTMENT + "." + Settings.KEY_NAME_DEPARTMENT
-                + " like '%" + nameDepartment + "%'";
+                + " WHERE " + Settings.TABLE_STAFF + "." + Settings.KEY_ID_POSITION_IN_COMPANY_STAFF + "=" + Settings.TABLE_DEPARTMENT + "." + Settings.KEY_ID_DEPARTMENT
+                + " AND " + Settings.TABLE_DEPARTMENT + "." + Settings.KEY_NAME_DEPARTMENT
+                + " like '%" + nameDepartment + "%'"
+                + " ORDER BY " + Settings.TABLE_STAFF + "." + Settings.KEY_NAME_STAFF
+                + " LIMIT " + limit
+                + " OFFSET " + start;
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null && cursor.moveToFirst()) {

@@ -24,22 +24,22 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
     public static final int TYPE_STAFF = 1;
     private List<Departments> mDepartmentList;
     private List<Staff> mStaffList;
-    private int type;
+    private int mType;
     private OnClickItemListener mOnClickItemListener;
 
     public DataRecyclerViewAdapter(List<Staff> staffList, int typeStaff) {
         this.mStaffList = staffList;
-        this.type = typeStaff;
+        this.mType = typeStaff;
     }
 
     public DataRecyclerViewAdapter(List<Departments> departmentsList) {
         this.mDepartmentList = departmentsList;
-        this.type = TYPE_DEPARTMENT;
+        this.mType = TYPE_DEPARTMENT;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return type;
+        return mType;
     }
 
     public void setOnClickItemListener(OnClickItemListener mOnClickItemListener) {
@@ -48,7 +48,7 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (type) {
+        switch (mType) {
             case TYPE_DEPARTMENT:
                 View viewDepartment = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_department_vi, parent, false);
@@ -68,7 +68,7 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.mImage.setImageDrawable(null);
         Glide.clear(holder.mImage);
-        switch (type) {
+        switch (mType) {
             case TYPE_DEPARTMENT:
                 Departments departments = mDepartmentList.get(position);
                 Glide.with(holder.itemView.getContext()).load(departments.getIdImage())
@@ -109,7 +109,7 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
 
     @Override
     public int getItemCount() {
-        switch (type) {
+        switch (mType) {
             case TYPE_DEPARTMENT:
                 return mDepartmentList == null ? 0 : mDepartmentList.size();
             case TYPE_STAFF:
@@ -125,7 +125,7 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
 
         public MyViewHolder(final View view) {
             super(view);
-            switch (type) {
+            switch (mType) {
                 case TYPE_DEPARTMENT:
                     mName = (TextView) view.findViewById(R.id.text_name);
                     mImage = (ImageView) view.findViewById(R.id.image_department);

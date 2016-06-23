@@ -77,6 +77,7 @@ public class Settings {
             R.drawable.img_department5,
             R.drawable.img_department6
     };
+    public static final int START_INDEX_DEFAULT = 0;
     // db test
     private static final String DEPARTMENT1 = "DIV 1";
     private static final String DEPARTMENT2 = "DIV 2";
@@ -90,7 +91,7 @@ public class Settings {
     private static final String PLACE_OF_BIRTH_STAFF[] = {"Ha Noi", "Hai Duong", "Ho Chi Minh", "Da Nang", "Nam Dinh"};
     private static final String BIRTHDAY_STAFF[] = {"29/08/1992", "29/08/1991", "19/08/1989", "29/02/1988", "09/12/1995"};
     private static final String PHONE_STAFF[] = {"0964980253", "0964980253", "0964980253", "0964980253", "0964980253"};
-    private static final int ID_POSITION_IN_COMPANY_STAFF[] = {1, 1, 1, 1, 1};
+    private static final int ID_POSITION_IN_COMPANY_STAFF[] = {1, 2, 3, 4, 1};
     private static final int ID_STATUS_STAFF[] = {1, 2, 1, 3, 1};
     private static final int LEFT_JOB_STAFF[] = {0, 0, 0, 0, 1};
     private static final String NAME_ACCOUNT[] = {"admin", "test1", "test2", "test3"};
