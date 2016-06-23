@@ -13,6 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private DBDepartment mDbDepartment;
     private DBStaff mDbStaff;
     private DBStatus mDbStatus;
+    private DBAccount mDbAccount;
 
     public DBHelper(Context context) {
         super(context, Settings.DATABASE_NAME, null, Settings.DATABASE_VERSION);
@@ -47,12 +48,21 @@ public class DBHelper extends SQLiteOpenHelper {
         mDbStatus = new DBStatus(this);
     }
 
+    public DBAccount getDbAccount() {
+        return mDbAccount;
+    }
+
+    public void createAccount() {
+        mDbAccount = new DBAccount(this);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + Settings.TABLE_DEPARTMENT);
         db.execSQL("DROP TABLE IF EXISTS " + Settings.TABLE_STAFF);
         db.execSQL("DROP TABLE IF EXISTS " + Settings.TABLE_STATUS);
+        db.execSQL("DROP TABLE IF EXISTS " + Settings.TABLE_ACCOUNT);
         // Create tables again
         onCreate(db);
     }
@@ -75,5 +85,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Settings.KEY_ID_STATUS + " INTEGER PRIMARY KEY,"
                 + Settings.KEY_TYPE_STATUS + " TEXT" + ")";
         db.execSQL(CREATE_TABLE_STATUS);
+        // table account
+        String CREATE_TABLE_ACCOUNT = "CREATE TABLE " + Settings.TABLE_ACCOUNT + "("
+                + Settings.KEY_ID_ACCOUNT + " INTEGER PRIMARY KEY,"
+                + Settings.KEY_NAME_ACCOUNT + " TEXT,"
+                + Settings.KEY_PASS_ACCOUNT + " TEXT,"
+                + Settings.KEY_PERMISSION_ACCOUNT + " INTEGER" + ")";
+        db.execSQL(CREATE_TABLE_ACCOUNT);
     }
 }

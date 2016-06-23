@@ -79,10 +79,10 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     private void checkInitViews() {
         String settings = getIntent().getStringExtra(Settings.SETTINGS);
         switch (settings) {
-            case Settings.SHOWDEPARTMENT:
+            case Settings.SHOW_DEPARTMENT:
                 initViews(DataRecyclerViewAdapter.TYPE_DEPARTMENT);
                 break;
-            case Settings.SHOWSTAFF:
+            case Settings.SHOW_STAFF:
                 mIdDepartment = getIntent().getIntExtra(Settings.ID_DEPARTMENT, Settings.ID_DEPARTMENT_DEFAULT);
                 if (mIdDepartment > Settings.ID_DEPARTMENT_NULL) {
                     mStaffList = mDbHelper.getDbStaff().getAllStaffs(mIdDepartment);
@@ -96,11 +96,6 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
         mDbHelper = new DBHelper(this);
         mDbHelper.createDbDepartment();
         mDbHelper.createDbStaff();
-        mDbHelper.createDbStatus();
-        int length = mDbHelper.getDbDepartment().getDepartmentCount();
-        if (length == Settings.DATABASE_NULL) {
-            Settings.create(mDbHelper);
-        }
         mDepartmentsList = mDbHelper.getDbDepartment().getAllDepartments();
     }
 
@@ -145,13 +140,13 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
             case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
                 Intent intent = new Intent(getApplicationContext(), ListDepartmentStaffActivity.class);
                 intent.putExtra(Settings.ID_DEPARTMENT, mDepartmentsList.get(position).getId());
-                intent.putExtra(Settings.SETTINGS, Settings.SHOWSTAFF);
+                intent.putExtra(Settings.SETTINGS, Settings.SHOW_STAFF);
                 startActivity(intent);
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
                 intent = new Intent(getApplicationContext(), StaffActivity.class);
                 intent.putExtra(Settings.ID_STAFF, mStaffList.get(position).getId());
-                intent.putExtra(Settings.SETTINGS, Settings.SHOWSTAFF);
+                intent.putExtra(Settings.SETTINGS, Settings.SHOW_STAFF);
                 startActivity(intent);
                 break;
         }
@@ -164,13 +159,13 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
             case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
                 Intent intent = new Intent(getApplicationContext(), DepartmentActivity.class);
                 intent.putExtra(Settings.ID_DEPARTMENT, mDepartmentsList.get(position).getId());
-                intent.putExtra(Settings.SETTINGS, Settings.EDITDEPARTMENT);
+                intent.putExtra(Settings.SETTINGS, Settings.EDIT_DEPARTMENT);
                 startActivity(intent);
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
                 intent = new Intent(getApplicationContext(), StaffActivity.class);
                 intent.putExtra(Settings.ID_STAFF, mStaffList.get(position).getId());
-                intent.putExtra(Settings.SETTINGS, Settings.EDITSTAFF);
+                intent.putExtra(Settings.SETTINGS, Settings.EDIT_STAFF);
                 startActivity(intent);
                 break;
         }
@@ -191,12 +186,12 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
         switch (id) {
             case R.id.addStaff:
                 Intent intent = new Intent(getBaseContext(), StaffActivity.class);
-                intent.putExtra(Settings.SETTINGS, Settings.ADDSTAFF);
+                intent.putExtra(Settings.SETTINGS, Settings.ADD_STAFF);
                 startActivity(intent);
                 return true;
             case R.id.addDepartment:
                 intent = new Intent(getApplicationContext(), DepartmentActivity.class);
-                intent.putExtra(Settings.SETTINGS, Settings.ADDDEPARTMENT);
+                intent.putExtra(Settings.SETTINGS, Settings.ADD_DEPARTMENT);
                 startActivity(intent);
                 return true;
             default:

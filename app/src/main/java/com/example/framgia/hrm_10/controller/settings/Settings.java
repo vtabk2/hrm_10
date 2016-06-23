@@ -2,6 +2,7 @@ package com.example.framgia.hrm_10.controller.settings;
 
 import com.example.framgia.hrm_10.R;
 import com.example.framgia.hrm_10.controller.database.DBHelper;
+import com.example.framgia.hrm_10.model.data.Account;
 import com.example.framgia.hrm_10.model.data.Departments;
 import com.example.framgia.hrm_10.model.data.Staff;
 import com.example.framgia.hrm_10.model.data.Status;
@@ -20,6 +21,8 @@ public class Settings {
     public static final String TABLE_DEPARTMENT = "department";
     // Status table name
     public static final String TABLE_STATUS = "status";
+    // Account table name
+    public static final String TABLE_ACCOUNT = "account";
     // DEPARTMENT Table Columns names
     public static final String KEY_ID_DEPARTMENT = "id";
     public static final String KEY_NAME_DEPARTMENT = "name";
@@ -36,6 +39,12 @@ public class Settings {
     // STATUS
     public static final String KEY_ID_STATUS = "id";
     public static final String KEY_TYPE_STATUS = "type";
+    // ACCOUNT
+    public static final String KEY_ID_ACCOUNT = "id";
+    public static final String KEY_NAME_ACCOUNT = "acc";
+    public static final String KEY_PASS_ACCOUNT = "pass";
+    public static final String KEY_PERMISSION_ACCOUNT = "permission";
+    public static final int PERMISSION_DEFAULT = 0;
     // All Static variables
     public static final int DATABASE_NULL = 0;
     public static final int COUNT_NULL = 0;
@@ -48,16 +57,18 @@ public class Settings {
     public static final int ID_STAFF_DEFAULT = 1;
     public static final int ID_DEPARTMENT_NULL = 0;
     public static final int ID_STAFF_NULL = 0;
-    public static final String DATEPICKER = "datePicker";
-    public static final String ADDSTAFF = "addStaff";
-    public static final String EDITSTAFF = "editStaff";
-    public static final String SHOWSTAFF = "showStaff";
-    public static final String SHOWDEPARTMENT = "showDepartment";
+    public static final String DATE_PICKER = "datePicker";
+    public static final String ADD_STAFF = "addStaff";
+    public static final String EDIT_STAFF = "editStaff";
+    public static final String SHOW_STAFF = "showStaff";
+    public static final String SHOW_DEPARTMENT = "showDepartment";
     public static final String SETTINGS = "Settings";
     public static final int LEFT_JOB = 1;
     public static final int NOT_LEFT_JOB = 0;
-    public static final String EDITDEPARTMENT = "editDepartment";
-    public static final String ADDDEPARTMENT = "addDepartment";
+    public static final int LOGIN_ADMIN = 1;
+    public static final int LOGIN_GUEST = 2;
+    public static final String EDIT_DEPARTMENT = "editDepartment";
+    public static final String ADD_DEPARTMENT = "addDepartment";
     public static final String INTENT_DATA = "data";
     public static final int ID_IMAGE_DEPARTMENT[] = {R.drawable.img_department1,
             R.drawable.img_department2,
@@ -82,6 +93,9 @@ public class Settings {
     private static final int ID_POSITION_IN_COMPANY_STAFF[] = {1, 1, 1, 1, 1};
     private static final int ID_STATUS_STAFF[] = {1, 2, 1, 3, 1};
     private static final int LEFT_JOB_STAFF[] = {0, 0, 0, 0, 1};
+    private static final String NAME_ACCOUNT[] = {"admin", "test1", "test2", "test3"};
+    private static final String PASS_ACCOUNT[] = {"admin", "test1", "test2", "test3"};
+    private static final int PERMISSION_ACCOUNT[] = {1, 1, 1, 1};
 
     public static void create(DBHelper mDbHelper) {
         // db test 7/6/2016
@@ -101,5 +115,9 @@ public class Settings {
         mDbHelper.getDbStatus().addStatus(new Status(STATUS1));
         mDbHelper.getDbStatus().addStatus(new Status(STATUS2));
         mDbHelper.getDbStatus().addStatus(new Status(STATUS3));
+        // db 22/6/2016
+        for (int i = 0; i < 4; i++) {
+            mDbHelper.getDbAccount().addAccount(new Account(NAME_ACCOUNT[i], PASS_ACCOUNT[i], PERMISSION_ACCOUNT[i]));
+        }
     }
 }
