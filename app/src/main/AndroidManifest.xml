@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.framgia.hrm_10"
-    android:versionCode="1"
-    android:versionName="1.0">
+    android:versionCode="2"
+    android:versionName="1.1">
 
     <uses-sdk
         android:maxSdkVersion="23"
@@ -20,9 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.showstaffdepartment.ListDepartmentStaffActivity" />
+        <activity
+            android:name=".view.showstaffdepartment.ListDepartmentStaffActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.editstaffdepartment.StaffActivity" />
-        <activity android:name=".view.editstaffdepartment.DepartmentActivity" />
+        <activity
+            android:name=".view.editstaffdepartment.DepartmentActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.search.SearchStaffActivity" />
     </application>
 </manifest>
