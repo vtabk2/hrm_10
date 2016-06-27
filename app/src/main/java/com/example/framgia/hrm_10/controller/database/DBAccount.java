@@ -32,7 +32,8 @@ public class DBAccount {
 
     public int login(String name, String pass) {
         int permission = Settings.PERMISSION_DEFAULT;
-        String selectQuery = "SELECT  * FROM " + Settings.TABLE_ACCOUNT + " WHERE " + Settings.KEY_NAME_ACCOUNT + "=?"
+        String selectQuery = "SELECT  * FROM " + Settings.TABLE_ACCOUNT
+                + " WHERE " + Settings.KEY_NAME_ACCOUNT + "=?"
                 + " AND " + Settings.KEY_PASS_ACCOUNT + " =?";
         SQLiteDatabase db = mSqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{name, pass});

@@ -16,9 +16,11 @@ import com.example.framgia.hrm_10.controller.database.DBHelper;
 import com.example.framgia.hrm_10.controller.recyclerviewdata.DataRecyclerViewAdapter;
 import com.example.framgia.hrm_10.controller.settings.Settings;
 import com.example.framgia.hrm_10.model.data.Staff;
+import com.example.framgia.hrm_10.model.listenner.EndlessRecyclerViewScrollListener;
 import com.example.framgia.hrm_10.model.listenner.OnClickItemListener;
 import com.example.framgia.hrm_10.view.editstaffdepartment.StaffActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
@@ -51,11 +53,12 @@ public class SearchStaffActivity extends AppCompatActivity implements OnClickIte
     }
 
     private void initViews() {
+        mStaffList = new ArrayList<Staff>();
         mEditTextSearch = (EditText) findViewById(R.id.edit_search);
         mButtonSearch = (Button) findViewById(R.id.button_search);
         mRadioGroupSearch = (RadioGroup) findViewById(R.id.radioGroup_search);
         String query = getIntent().getStringExtra(Settings.INTENT_DATA);
-        mStaffList = mDbHelper.getDbStaff().getListStaffByName(query);
+        mStaffList = mDbHelper.getDbStaff().getListStaffByName(Settings.START_INDEX_DEFAULT, query, EndlessRecyclerViewScrollListener.STAFF_PER_PAGE);
         mEditTextSearch.setText(query);
         mAdapterRecyclerView = new DataRecyclerViewAdapter(mStaffList, DataRecyclerViewAdapter.TYPE_STAFF);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_search);
@@ -66,22 +69,36 @@ public class SearchStaffActivity extends AppCompatActivity implements OnClickIte
         mRecyclerView.setAdapter(mAdapterRecyclerView);
         mAdapterRecyclerView.setOnClickItemListener(this);
         mButtonSearch.setOnClickListener(this);
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int startIndex) {
+                getListStaff(startIndex);
+            }
+        });
+    }
+
+    private void getListStaff(int startIndex) {
+        List<Staff> listNextPage;
+        switch (mRadioGroupSearch.getCheckedRadioButtonId()) {
+            case R.id.radioButton_Phone:
+                listNextPage = mDbHelper.getDbStaff().getListStaffByPhone(startIndex, mEditTextSearch.getText().toString(), EndlessRecyclerViewScrollListener.STAFF_PER_PAGE);
+                break;
+            case R.id.radioButton_NameDepartment:
+                listNextPage = mDbHelper.getDbStaff().getListStaffByDepartment(startIndex, mEditTextSearch.getText().toString(), EndlessRecyclerViewScrollListener.STAFF_PER_PAGE);
+                break;
+            default:
+                listNextPage = mDbHelper.getDbStaff().getListStaffByName(startIndex, mEditTextSearch.getText().toString(), EndlessRecyclerViewScrollListener.STAFF_PER_PAGE);
+                break;
+        }
+        if (listNextPage != null) {
+            mStaffList.addAll(listNextPage);
+            mAdapterRecyclerView.notifyDataSetChanged();
+        }
     }
 
     private void doSearch() {
         mStaffList.clear();
-        switch (mRadioGroupSearch.getCheckedRadioButtonId()) {
-            case R.id.radioButton_Phone:
-                mStaffList.addAll(mDbHelper.getDbStaff().getListStaffByPhone(mEditTextSearch.getText().toString()));
-                break;
-            case R.id.radioButton_NameDepartment:
-                mStaffList.addAll(mDbHelper.getDbStaff().getListStaffByDepartment(mEditTextSearch.getText().toString()));
-                break;
-            default:
-                mStaffList.addAll(mDbHelper.getDbStaff().getListStaffByName(mEditTextSearch.getText().toString()));
-                break;
-        }
-        mAdapterRecyclerView.notifyDataSetChanged();
+        getListStaff(Settings.START_INDEX_DEFAULT);
     }
 
     @Override
