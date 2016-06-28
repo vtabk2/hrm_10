@@ -10,8 +10,9 @@
 
         <ImageView
             android:id="@+id/image_department_staff"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/img_department4" />
 
         <ImageView
@@ -19,19 +20,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/image_department_staff"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignLeft="@+id/image_department_staff"
             android:src="@drawable/img_staff" />
 
         <TextView
             android:id="@+id/text_Name_staff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignLeft="@+id/image_department_staff"
+            android:layout_alignStart="@+id/image_department_staff"
             android:layout_below="@+id/image_department_staff"
             android:layout_marginLeft="@dimen/text_activity_staff_marginLeft"
-            android:layout_marginStart="@dimen/text_activity_staff_marginLeft"
             android:layout_marginTop="@dimen/text_activity_staff_marginTop"
             android:text="@string/nameStaff"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -71,7 +70,7 @@
 
         <TextView
             android:id="@+id/text_Position_in_company"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/text_activity_staff_width"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/text_Phone"
             android:layout_alignStart="@+id/text_Phone"
@@ -106,9 +105,9 @@
             android:id="@+id/edit_place_of_birth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/edit_name_staff"
-            android:layout_alignStart="@+id/edit_name_staff"
-            android:layout_below="@+id/edit_name_staff"
+            android:layout_above="@+id/text_Birthday"
+            android:layout_alignLeft="@+id/text_position_in_company"
+            android:layout_alignStart="@+id/text_position_in_company"
             android:ems="10"
             android:inputType="textPersonName" />
 
@@ -147,6 +146,7 @@
             android:layout_alignBottom="@+id/text_Position_in_company"
             android:layout_alignLeft="@+id/text_Position_in_company"
             android:layout_alignStart="@+id/text_Position_in_company"
+            android:layout_marginBottom="@dimen/spinner_activity_staff_marginBottom"
             android:layout_marginLeft="@dimen/spinner_activity_staff_marginLeft" />
 
         <Button
@@ -162,7 +162,7 @@
             android:id="@+id/text_position_in_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/spinner_position_in_company"
+            android:layout_alignBottom="@+id/spinner_position_in_company"
             android:layout_marginLeft="@dimen/text_activity_staff_marginLeft"
             android:layout_toEndOf="@+id/text_Position_in_company"
             android:layout_toRightOf="@+id/text_Position_in_company"

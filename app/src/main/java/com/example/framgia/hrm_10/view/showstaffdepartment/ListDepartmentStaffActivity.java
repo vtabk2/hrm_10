@@ -72,7 +72,6 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
                 mStaffList.clear();
-                mStaffList.addAll(mDbHelper.getDbStaff().getListStaffbyIdDepartment(Settings.START_INDEX_DEFAULT, mIdDepartment, EndlessRecyclerViewScrollListener.STAFF_PER_PAGE));
                 getListStaff(Settings.START_INDEX_DEFAULT);
                 break;
         }
