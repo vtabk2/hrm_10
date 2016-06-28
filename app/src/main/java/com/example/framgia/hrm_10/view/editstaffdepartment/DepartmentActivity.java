@@ -104,8 +104,8 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
 
     private void showEditDepartment() {
         if (editAddDepartment(true)) {
-            setEnableViews(false);
             Utility.showToast(getApplicationContext(), getText(R.string.updateDepartmSuccessfully));
+            onBackPressed();
         } else {
             Utility.showToast(getApplicationContext(), getText(R.string.updateDepartmFailed));
         }
@@ -113,8 +113,8 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
 
     private void showAddDepartment() {
         if (editAddDepartment(false)) {
-            setEnableViews(false);
             Utility.showToast(getApplicationContext(), getText(R.string.addDepartmentSuccessfully));
+            onBackPressed();
         } else {
             Utility.showToast(getApplicationContext(), getText(R.string.addDepartmentFailed));
         }

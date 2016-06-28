@@ -218,8 +218,8 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
 
     private void showEditStaff() {
         if (editStaff()) {
-            setEnableViews(false, false);
             Utility.showToast(getApplicationContext(), getText(R.string.editSuccessfully));
+            onBackPressed();
         } else {
             Utility.showToast(getApplicationContext(), getText(R.string.editFailed));
         }
@@ -227,8 +227,8 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
 
     private void showAddStaff() {
         if (addStaff()) {
-            setEnableViews(false, false);
             Utility.showToast(getApplicationContext(), getText(R.string.addSuccessfully));
+            onBackPressed();
         } else {
             Utility.showToast(getApplicationContext(), getText(R.string.addFailed));
         }

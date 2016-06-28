@@ -1,5 +1,6 @@
 package com.example.framgia.hrm_10.view.search;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -99,6 +101,9 @@ public class SearchStaffActivity extends AppCompatActivity implements OnClickIte
     private void doSearch() {
         mStaffList.clear();
         getListStaff(Settings.START_INDEX_DEFAULT);
+        InputMethodManager imm = (InputMethodManager) getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 
     @Override
@@ -112,6 +117,7 @@ public class SearchStaffActivity extends AppCompatActivity implements OnClickIte
         intent.putExtra(Settings.ID_STAFF, mStaffList.get(position).getId());
         intent.putExtra(Settings.SETTINGS, Settings.SHOW_STAFF);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -120,5 +126,6 @@ public class SearchStaffActivity extends AppCompatActivity implements OnClickIte
         intent.putExtra(Settings.ID_STAFF, mStaffList.get(position).getId());
         intent.putExtra(Settings.SETTINGS, Settings.EDIT_STAFF);
         startActivity(intent);
+        finish();
     }
 }
