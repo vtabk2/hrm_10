@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(getBaseContext(), ListDepartmentStaffActivity.class);
                 intent.putExtra(Settings.SETTINGS, Settings.SHOW_DEPARTMENT);
                 startActivity(intent);
+                finish();
                 break;
             default:
                 showLogError();

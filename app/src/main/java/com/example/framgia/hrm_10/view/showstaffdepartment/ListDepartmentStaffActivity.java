@@ -1,8 +1,10 @@
 package com.example.framgia.hrm_10.view.showstaffdepartment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.example.framgia.hrm_10.model.listenner.EndlessRecyclerViewScrollListe
 import com.example.framgia.hrm_10.model.listenner.OnClickItemListener;
 import com.example.framgia.hrm_10.view.editstaffdepartment.DepartmentActivity;
 import com.example.framgia.hrm_10.view.editstaffdepartment.StaffActivity;
+import com.example.framgia.hrm_10.view.home.MainActivity;
 import com.example.framgia.hrm_10.view.search.SearchStaffActivity;
 
 import java.util.ArrayList;
@@ -69,13 +72,13 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
             case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
                 mDepartmentsList.clear();
                 mDepartmentsList.addAll(mDbHelper.getDbDepartment().getAllDepartments());
+                mAdapterRecyclerView.notifyDataSetChanged();
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
                 mStaffList.clear();
                 getListStaff(Settings.START_INDEX_DEFAULT);
                 break;
         }
-        mAdapterRecyclerView.notifyDataSetChanged();
     }
 
     private void checkInitViews() {
@@ -190,10 +193,12 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        MenuItem searchMenuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) searchMenuItem.getActionView();
-        searchView.setOnQueryTextListener(mSearchViewListener);
+        if(mTypeDataRecyclerViewAdapter==DataRecyclerViewAdapter.TYPE_DEPARTMENT) {
+            getMenuInflater().inflate(R.menu.options_menu, menu);
+            MenuItem searchMenuItem = menu.findItem(R.id.search);
+            SearchView searchView = (SearchView) searchMenuItem.getActionView();
+            searchView.setOnQueryTextListener(mSearchViewListener);
+        }
         return true;
     }
 
@@ -205,14 +210,46 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 Intent intent = new Intent(getBaseContext(), StaffActivity.class);
                 intent.putExtra(Settings.SETTINGS, Settings.ADD_STAFF);
                 startActivity(intent);
-                return true;
+                break;
             case R.id.addDepartment:
                 intent = new Intent(getApplicationContext(), DepartmentActivity.class);
                 intent.putExtra(Settings.SETTINGS, Settings.ADD_DEPARTMENT);
                 startActivity(intent);
-                return true;
+                break;
+            case R.id.logOut:
+                AlertDialog myAlertDialog = createAlertDialog();
+                myAlertDialog.show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private AlertDialog createAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getText(R.string.message))
+                .setCancelable(false)
+                .setPositiveButton(getText(R.string.ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(myIntent);
+                                finish();
+                            }
+                        })
+                .setNeutralButton(getText(R.string.cancel), null);
+        AlertDialog dialog = builder.create();
+        return dialog;
+    }
+
+    @Override
+    public void onBackPressed() {
+        switch (mTypeDataRecyclerViewAdapter) {
+            case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
+                // nothing
+                break;
             default:
-                return false;
+                super.onBackPressed();
+                break;
         }
     }
 }

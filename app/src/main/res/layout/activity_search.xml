@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <EditText
@@ -15,9 +17,9 @@
         android:paddingTop="@dimen/edit_search_activity_paddingTop" />
 
     <RadioGroup
+        android:id="@+id/radioGroup_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/radioGroup_search"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
         android:paddingTop="@dimen/radiogroup_search_activity_paddingTop">

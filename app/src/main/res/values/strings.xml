@@ -8,6 +8,7 @@
     <string name="login1">Login in with admin</string>
     <string name="login2">Logged in successfully</string>
     <string name="login3">Login failed</string>
+    <string name="logOut">Log out</string>
     <string name="create">Create an account</string>
     <string name="singin">Sign in</string>
     <string name="nameStaff">Name</string>
@@ -37,4 +38,7 @@
     <string name="radioButtonNameStaff">Name staff</string>
     <string name="radioButtonPhone">Phone</string>
     <string name="radioButtonDepartment">Department</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="message">Do you really want to log out?</string>
 </resources>
