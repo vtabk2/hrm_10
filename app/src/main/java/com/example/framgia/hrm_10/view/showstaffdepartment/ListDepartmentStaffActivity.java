@@ -1,7 +1,9 @@
 package com.example.framgia.hrm_10.view.showstaffdepartment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -44,6 +46,7 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     private int mTypeDataRecyclerViewAdapter;
     private int mIdDepartment;
     private SearchView.OnQueryTextListener mSearchViewListener;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,6 +105,7 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
         mDbHelper.createDbDepartment();
         mDbHelper.createDbStaff();
         mDepartmentsList = mDbHelper.getDbDepartment().getAllDepartments();
+        mSharedPreferences = getSharedPreferences(Settings.SHARE_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     private void initViews(final int type) {
@@ -193,7 +197,7 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(mTypeDataRecyclerViewAdapter==DataRecyclerViewAdapter.TYPE_DEPARTMENT) {
+        if (mTypeDataRecyclerViewAdapter == DataRecyclerViewAdapter.TYPE_DEPARTMENT) {
             getMenuInflater().inflate(R.menu.options_menu, menu);
             MenuItem searchMenuItem = menu.findItem(R.id.search);
             SearchView searchView = (SearchView) searchMenuItem.getActionView();
@@ -231,6 +235,9 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 .setPositiveButton(getText(R.string.ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                                editor.remove(Settings.KEY_ID_ACCOUNT);
+                                editor.commit();
                                 Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(myIntent);
                                 finish();
