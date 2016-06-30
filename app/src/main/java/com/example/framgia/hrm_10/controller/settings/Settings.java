@@ -39,9 +39,7 @@ public class Settings {
     public static final String KEY_NAME_ACCOUNT = "acc";
     public static final String KEY_PASS_ACCOUNT = "pass";
     public static final String KEY_PERMISSION_ACCOUNT = "permission";
-    public static final int PERMISSION_DEFAULT = 0;
     // All Static variables
-    public static final int DATABASE_NULL = 0;
     public static final int COUNT_NULL = 0;
     public static final int ID_NULL = -1;
     public static final int CHECK_UPDATE_TRUE = 0;
@@ -61,7 +59,6 @@ public class Settings {
     public static final int LEFT_JOB = 1;
     public static final int NOT_LEFT_JOB = 0;
     public static final int LOGIN_ADMIN = 1;
-    public static final int LOGIN_GUEST = 2;
     public static final String EDIT_DEPARTMENT = "editDepartment";
     public static final String ADD_DEPARTMENT = "addDepartment";
     public static final String INTENT_DATA = "data";
@@ -73,4 +70,5 @@ public class Settings {
             R.drawable.img_department6
     };
     public static final int START_INDEX_DEFAULT = 0;
+    public static final String SHARE_PREFERENCES = "sharelogin";
 }
