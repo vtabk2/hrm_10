@@ -96,49 +96,60 @@
             android:id="@+id/edit_name_staff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/text_Place_of_birth"
-            android:layout_marginLeft="@dimen/edit_activity_staff_marginLeft"
-            android:layout_toEndOf="@+id/text_Position_in_company"
-            android:layout_toRightOf="@+id/text_Position_in_company"
+            android:layout_alignBaseline="@+id/text_Name_staff"
+            android:layout_alignBottom="@+id/text_Name_staff"
+            android:layout_marginLeft="@dimen/edit_staff_activity_marginLeft"
+            android:layout_marginStart="@dimen/edit_staff_activity_marginLeft"
+            android:layout_toEndOf="@+id/text_Place_of_birth"
+            android:layout_toRightOf="@+id/text_Place_of_birth"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingBottom="@dimen/edit_text_staff_activity_paddingBottom"
+            android:paddingLeft="@dimen/edit_text_staff_activity_paddingBottom" />
 
         <EditText
             android:id="@+id/edit_place_of_birth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/text_Birthday"
-            android:layout_alignLeft="@+id/text_position_in_company"
-            android:layout_alignStart="@+id/text_position_in_company"
+            android:layout_alignBaseline="@+id/text_Place_of_birth"
+            android:layout_alignBottom="@+id/text_Place_of_birth"
+            android:layout_alignLeft="@+id/edit_name_staff"
+            android:layout_alignStart="@+id/edit_name_staff"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingBottom="@dimen/edit_text_staff_activity_paddingBottom"
+            android:paddingLeft="@dimen/edit_text_staff_activity_paddingBottom" />
 
         <EditText
             android:id="@+id/edit_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/text_Position_in_company"
+            android:layout_alignBaseline="@+id/text_Phone"
+            android:layout_alignBottom="@+id/text_Phone"
             android:layout_alignLeft="@+id/edit_place_of_birth"
             android:layout_alignStart="@+id/edit_place_of_birth"
             android:ems="10"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:paddingBottom="@dimen/edit_text_staff_activity_paddingBottom"
+            android:paddingLeft="@dimen/edit_text_staff_activity_paddingBottom" />
 
         <Spinner
             android:id="@+id/spinner_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/text_Status"
-            android:layout_alignLeft="@id/text_Status"
-            android:layout_alignStart="@id/text_Status"
-            android:layout_marginLeft="@dimen/spinner_activity_staff_marginLeft" />
+            android:layout_alignBottom="@+id/text_Status"
+            android:layout_alignLeft="@+id/edit_phone"
+            android:layout_alignStart="@+id/edit_phone" />
 
         <TextView
             android:id="@+id/text_birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/text_Phone"
             android:layout_alignLeft="@+id/edit_phone"
             android:layout_alignStart="@+id/edit_phone"
-            android:layout_alignTop="@+id/text_Birthday"
+            android:layout_marginLeft="@dimen/text_staff_activity_marginLeft"
+            android:layout_marginStart="@dimen/text_staff_activity_marginLeft"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Spinner
@@ -146,73 +157,74 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/text_Position_in_company"
-            android:layout_alignLeft="@+id/text_Position_in_company"
-            android:layout_alignStart="@+id/text_Position_in_company"
-            android:layout_marginBottom="@dimen/spinner_activity_staff_marginBottom"
-            android:layout_marginLeft="@dimen/spinner_activity_staff_marginLeft" />
+            android:layout_alignLeft="@+id/edit_phone"
+            android:layout_alignStart="@+id/edit_phone" />
 
         <Button
             android:id="@+id/button_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/text_left_job"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/button_activity_staff_marginTop"
+            android:layout_alignLeft="@+id/edit_phone"
+            android:layout_alignStart="@+id/edit_phone"
+            android:layout_below="@+id/radioGroup_Job"
+            android:layout_marginTop="@dimen/button_staff_activity_marginTop"
             android:text="@string/submit" />
 
         <TextView
             android:id="@+id/text_position_in_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/spinner_position_in_company"
-            android:layout_marginLeft="@dimen/text_activity_staff_marginLeft"
-            android:layout_toEndOf="@+id/text_Position_in_company"
-            android:layout_toRightOf="@+id/text_Position_in_company"
+            android:layout_alignLeft="@+id/edit_phone"
+            android:layout_alignStart="@+id/edit_phone"
+            android:layout_alignTop="@+id/text_Position_in_company"
+            android:layout_marginLeft="@dimen/text_staff_activity_marginLeft"
+            android:layout_marginStart="@dimen/text_staff_activity_marginLeft"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/text_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/spinner_status"
-            android:layout_marginLeft="@dimen/text_activity_staff_marginLeft"
-            android:layout_toRightOf="@+id/text_Position_in_company"
+            android:layout_alignLeft="@+id/text_position_in_company"
+            android:layout_alignStart="@+id/text_position_in_company"
+            android:layout_alignTop="@+id/text_Status"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/text_left_job"
+            android:id="@+id/text_workstatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/text_Status"
             android:layout_alignStart="@+id/text_Status"
             android:layout_below="@+id/text_Status"
             android:layout_marginTop="@dimen/text_activity_staff_marginTop"
-            android:text="@string/leftjob"
+            android:text="@string/workstatus"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <RadioGroup
-            android:id="@+id/radioGroup_Left_Job"
+            android:id="@+id/radioGroup_Job"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/text_left_job"
-            android:layout_marginLeft="@dimen/rdGroup_activity_staff_marginLeft"
-            android:layout_toEndOf="@+id/text_Status"
-            android:layout_toRightOf="@+id/text_Status"
+            android:layout_height="@dimen/radio_staff_activity_height"
+            android:layout_alignLeft="@+id/edit_phone"
+            android:layout_alignStart="@+id/edit_phone"
+            android:layout_alignTop="@+id/text_workstatus"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton_Yes"
+                android:id="@+id/radioButton_Working"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/rbYes" />
+                android:checked="true"
+                android:text="@string/rbWorking" />
 
             <RadioButton
-                android:id="@+id/radioButton_No"
+                android:id="@+id/radioButton_Stop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/rd_activity_staff_marginLeft"
                 android:layout_marginStart="@dimen/rd_activity_staff_marginLeft"
-                android:text="@string/rbNo" />
+                android:checked="false"
+                android:text="@string/rbStoppedWorking" />
         </RadioGroup>
     </RelativeLayout>
 </ScrollView>

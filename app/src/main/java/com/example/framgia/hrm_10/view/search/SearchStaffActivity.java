@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,8 +25,6 @@ import com.example.framgia.hrm_10.view.editstaffdepartment.StaffActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 /**
  * Created by framgia on 22/06/2016.
@@ -67,7 +66,7 @@ public class SearchStaffActivity extends AppCompatActivity implements OnClickIte
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new SlideInUpAnimator());
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapterRecyclerView);
         mAdapterRecyclerView.setOnClickItemListener(this);
         mButtonSearch.setOnClickListener(this);

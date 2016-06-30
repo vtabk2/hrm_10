@@ -35,4 +35,9 @@
     <dimen name="edit_search_activity_paddingTop">40dp</dimen>
     <dimen name="radiogroup_search_activity_paddingTop">10dp</dimen>
     <dimen name="recyclerview_search_activity_paddingTop">10dp</dimen>
+    <dimen name="edit_text_staff_activity_paddingBottom">5dp</dimen>
+    <dimen name="radio_staff_activity_height">25dp</dimen>
+    <dimen name="text_staff_activity_marginLeft">5dp</dimen>
+    <dimen name="button_staff_activity_marginTop">25dp</dimen>
+    <dimen name="edit_staff_activity_marginLeft">15dp</dimen>
 </resources>

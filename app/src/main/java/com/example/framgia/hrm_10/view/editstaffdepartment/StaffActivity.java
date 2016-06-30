@@ -1,5 +1,6 @@
 package com.example.framgia.hrm_10.view.editstaffdepartment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -38,7 +39,7 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     private int mIdStaff;
     private Spinner mSpinnerStatus, mSpinnerPositionInCompany;
     private RadioGroup mRadioGroupLeftJob;
-    private RadioButton mRadioButtonYes, mRadioButtonNo;
+    private RadioButton mRadioButtonWorking, mRadioButtonStop;
     private String mTypeSettings;
     private List<String> mStatusList = new ArrayList<String>();
     private List<String> mPositionInCompanyList = new ArrayList<String>();
@@ -98,9 +99,9 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         mButtonSubmit.setOnClickListener(this);
         mTextViewBirthday.setOnClickListener(this);
         createSpinnerViews();
-        mRadioGroupLeftJob = (RadioGroup) findViewById(R.id.radioGroup_Left_Job);
-        mRadioButtonYes = (RadioButton) findViewById(R.id.radioButton_Yes);
-        mRadioButtonNo = (RadioButton) findViewById(R.id.radioButton_No);
+        mRadioGroupLeftJob = (RadioGroup) findViewById(R.id.radioGroup_Job);
+        mRadioButtonWorking = (RadioButton) findViewById(R.id.radioButton_Working);
+        mRadioButtonStop = (RadioButton) findViewById(R.id.radioButton_Stop);
     }
 
     private void setOnItemSelectedListener() {
@@ -154,16 +155,17 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void setEnableViews(boolean enabled, boolean add) {
-        mEditTextName.setEnabled(enabled);
-        mEditTextPlaceOfBirth.setEnabled(enabled);
-        mTextViewBirthday.setEnabled(enabled);
-        mEditTextPhone.setEnabled(enabled);
-        mTextViewPositionInCompany.setEnabled(enabled);
-        mTextViewStatus.setEnabled(enabled);
         mEditTextName.setFocusableInTouchMode(enabled);
-        mEditTextName.setClickable(enabled);
-        mRadioButtonYes.setEnabled(enabled);
-        mRadioButtonNo.setEnabled(enabled);
+        mEditTextPlaceOfBirth.setFocusableInTouchMode(enabled);
+        mTextViewBirthday.setClickable(enabled);
+        mEditTextPhone.setFocusableInTouchMode(enabled);
+        mRadioButtonWorking.setClickable(enabled);
+        mRadioButtonStop.setClickable(enabled);
+        if(!enabled){
+            mEditTextName.setBackgroundColor(Color.TRANSPARENT);
+            mEditTextPlaceOfBirth.setBackgroundColor(Color.TRANSPARENT);
+            mEditTextPhone.setBackgroundColor(Color.TRANSPARENT);
+        }
         mButtonSubmit.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
         mSpinnerPositionInCompany.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
         mSpinnerStatus.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
@@ -171,7 +173,7 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         mTextViewStatus.setVisibility(enabled ? View.INVISIBLE : View.VISIBLE);
         if (add) {
             mTextViewBirthday.setText(R.string.birthdayDefault);
-            mRadioButtonNo.setChecked(add);
+            mRadioButtonStop.setChecked(add);
         }
     }
 
@@ -187,8 +189,8 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
                 mTextViewStatus.setText(mDbHelper.getDbStatus().getStatus(staff.getIdStatus()));
                 mSpinnerPositionInCompany.setSelection(staff.getIdPositionInCompany() - 1);
                 mSpinnerStatus.setSelection(staff.getIdStatus() - 1);
-                mRadioButtonYes.setChecked(staff.getLeftJob() == Settings.LEFT_JOB);
-                mRadioButtonNo.setChecked(staff.getLeftJob() == Settings.NOT_LEFT_JOB);
+                mRadioButtonWorking.setChecked(staff.getLeftJob() == Settings.NOT_LEFT_JOB);
+                mRadioButtonStop.setChecked(staff.getLeftJob() == Settings.LEFT_JOB);
             }
         }
     }
@@ -220,8 +222,6 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         if (editStaff()) {
             Utility.showToast(getApplicationContext(), getText(R.string.editSuccessfully));
             onBackPressed();
-        } else {
-            Utility.showToast(getApplicationContext(), getText(R.string.editFailed));
         }
     }
 
@@ -229,14 +229,12 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         if (addStaff()) {
             Utility.showToast(getApplicationContext(), getText(R.string.addSuccessfully));
             onBackPressed();
-        } else {
-            Utility.showToast(getApplicationContext(), getText(R.string.addFailed));
         }
     }
 
     private int checkLeftJob() {
         int idChecked = mRadioGroupLeftJob.getCheckedRadioButtonId();
-        return idChecked == R.id.radioButton_Yes ? Settings.LEFT_JOB : Settings.NOT_LEFT_JOB;
+        return idChecked == R.id.radioButton_Working ? Settings.NOT_LEFT_JOB : Settings.LEFT_JOB;
     }
 
     private boolean editStaff() {
@@ -268,7 +266,19 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean checkStaffNull() {
-        if (!TextUtils.isEmpty(mEditTextName.getText().toString())
+        if (TextUtils.isEmpty(mEditTextName.getText().toString())) {
+            Utility.showToast(getApplicationContext(), getText(R.string._name));
+            return false;
+        } else if (TextUtils.isEmpty(mEditTextPhone.getText().toString())) {
+            Utility.showToast(getApplicationContext(), getText(R.string._phone));
+            return false;
+        } else if (TextUtils.isEmpty(mEditTextPlaceOfBirth.getText().toString())) {
+            Utility.showToast(getApplicationContext(), getText(R.string._placeOfBirth));
+            return false;
+        } else if (TextUtils.equals(mTextViewBirthday.getText().toString(), getText(R.string.birthdayDefault))) {
+            Utility.showToast(getApplicationContext(), getText(R.string._birthDay));
+            return false;
+        } else if (!TextUtils.isEmpty(mEditTextName.getText().toString())
                 && !TextUtils.isEmpty(mEditTextPlaceOfBirth.getText().toString())
                 && !TextUtils.equals(mTextViewBirthday.getText().toString(), getText(R.string.birthdayDefault))
                 && !TextUtils.isEmpty(mEditTextPhone.getText().toString())) {

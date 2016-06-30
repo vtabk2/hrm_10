@@ -46,7 +46,6 @@ public class Settings {
     public static final long CHECK_ADD_TRUE = 0;
     public static final String ID_DEPARTMENT = "iddepartment";
     public static final String ID_STAFF = "idstaff";
-    public static final int ID_DEPARTMENT_DEFAULT = 1;
     public static final int ID_STAFF_DEFAULT = 1;
     public static final int ID_DEPARTMENT_NULL = 0;
     public static final int ID_STAFF_NULL = 0;
