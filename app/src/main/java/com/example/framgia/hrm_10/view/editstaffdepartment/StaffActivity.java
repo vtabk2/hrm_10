@@ -288,7 +288,7 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showTimePickerDialog(View view) {
-        DialogFragment showTime = (new DatePickerFragment()).setBirthday(mTextViewBirthday);
+        DialogFragment showTime = (new DatePickerFragment()).setTextViewBirthday(mTextViewBirthday);
         showTime.show(getSupportFragmentManager(), Settings.DATE_PICKER);
     }
 }

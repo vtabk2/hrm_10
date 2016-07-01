@@ -18,7 +18,7 @@
     <string name="positionincompany">Position in company</string>
     <string name="status">Status</string>
     <string name="submit">Submit</string>
-    <string name="birthdayDefault">20/06/1192</string>
+    <string name="birthdayDefault">20/06/1900</string>
     <string name="rbStoppedWorking">Stopped</string>
     <string name="rbWorking">Working</string>
     <string name="workstatus">Work status</string>

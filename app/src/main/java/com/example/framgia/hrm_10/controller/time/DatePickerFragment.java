@@ -7,31 +7,33 @@ import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import java.util.Calendar;
-
 /**
  * Created by framgia on 02/06/2016.
  */
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
-    private TextView birthday;
+    private static final int DAY = 0;
+    private static final int MONTH = 1;
+    private static final int YEAR = 2;
+    private TextView mTextViewBirthday;
 
-    public DatePickerFragment setBirthday(TextView birthday) {
-        this.birthday = birthday;
+    public DatePickerFragment setTextViewBirthday(TextView textViewBirthday) {
+        this.mTextViewBirthday = textViewBirthday;
         return this;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        String tmp = mTextViewBirthday.getText().toString();
+        String[] arr = tmp.split("/");
+        int year = Integer.parseInt(arr[YEAR]);
+        int month = Integer.parseInt(arr[MONTH]);
+        int day = Integer.parseInt(arr[DAY]);
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         month = month + 1;
-        birthday.setText("" + String.format("%02d", day) + "/" + String.format("%02d", month) + "/" + year);
+        mTextViewBirthday.setText("" + String.format("%02d", day) + "/" + String.format("%02d", month) + "/" + year);
     }
 }
