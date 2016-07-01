@@ -40,8 +40,9 @@
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
     <string name="message">Do you really want to log out?</string>
-    <string name="_name">Name not null</string>
-    <string name="_phone">Phone not null</string>
-    <string name="_placeOfBirth">Place of birth not null</string>
+    <string name="messageExit">Do you really want to exit app?</string>
+    <string name="_name">Name not empty</string>
+    <string name="_phone">Phone not empty</string>
+    <string name="_placeOfBirth">Place of birth not empty</string>
     <string name="_birthDay">Birthday failed</string>
 </resources>

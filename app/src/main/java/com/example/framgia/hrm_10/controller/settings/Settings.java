@@ -70,4 +70,6 @@ public class Settings {
     };
     public static final int START_INDEX_DEFAULT = 0;
     public static final String SHARE_PREFERENCES = "sharelogin";
+    public static final int EXIT = 0;
+    public static final int LOGOUT = 1;
 }
