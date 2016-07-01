@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -31,8 +32,6 @@ import com.example.framgia.hrm_10.view.search.SearchStaffActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
-
 /**
  * Created by framgia on 02/06/2016.
  */
@@ -47,6 +46,7 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     private int mIdDepartment;
     private SearchView.OnQueryTextListener mSearchViewListener;
     private SharedPreferences mSharedPreferences;
+    private int mPosition;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,8 +78,10 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 mAdapterRecyclerView.notifyDataSetChanged();
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
-                mStaffList.clear();
-                getListStaff(Settings.START_INDEX_DEFAULT);
+                int id = mStaffList.get(mPosition).getId();
+                Staff staff = mDbHelper.getDbStaff().getStaff(id);
+                mStaffList.set(mPosition, staff);
+                mAdapterRecyclerView.notifyItemChanged(mPosition);
                 break;
         }
     }
@@ -91,13 +93,14 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 initViews(DataRecyclerViewAdapter.TYPE_DEPARTMENT);
                 break;
             case Settings.SHOW_STAFF:
-                mIdDepartment = getIntent().getIntExtra(Settings.ID_DEPARTMENT, Settings.ID_DEPARTMENT_DEFAULT);
+                mIdDepartment = getIntent().getIntExtra(Settings.ID_DEPARTMENT, Settings.ID_DEPARTMENT_NULL);
                 if (mIdDepartment > Settings.ID_DEPARTMENT_NULL) {
                     initViews(DataRecyclerViewAdapter.TYPE_STAFF);
                     getListStaff(Settings.START_INDEX_DEFAULT);
                 }
                 break;
         }
+
     }
 
     private void initDBHelper() {
@@ -122,9 +125,9 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
         }
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new SlideInUpAnimator());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapterRecyclerView);
         mAdapterRecyclerView.setOnClickItemListener(this);
         mSearchViewListener = new SearchView.OnQueryTextListener() {
@@ -142,7 +145,7 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 return false;
             }
         };
-        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int startIndex) {
                 getListStaff(startIndex);
@@ -168,6 +171,7 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 startActivity(intent);
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
+                mPosition = position;
                 intent = new Intent(getApplicationContext(), StaffActivity.class);
                 intent.putExtra(Settings.ID_STAFF, mStaffList.get(position).getId());
                 intent.putExtra(Settings.SETTINGS, Settings.SHOW_STAFF);
@@ -187,6 +191,7 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 startActivity(intent);
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
+                mPosition = position;
                 intent = new Intent(getApplicationContext(), StaffActivity.class);
                 intent.putExtra(Settings.ID_STAFF, mStaffList.get(position).getId());
                 intent.putExtra(Settings.SETTINGS, Settings.EDIT_STAFF);

@@ -19,12 +19,11 @@
     <string name="status">Status</string>
     <string name="submit">Submit</string>
     <string name="birthdayDefault">20/06/1192</string>
-    <string name="rbNo">No</string>
-    <string name="rbYes">Yes</string>
-    <string name="leftjob">Left-job</string>
-    <string name="addFailed">Add staff failed</string>
+    <string name="rbStoppedWorking">Stopped</string>
+    <string name="rbWorking">Working</string>
+    <string name="workstatus">Work status</string>
     <string name="addSuccessfully">Add staff successfully</string>
-    <string name="editFailed">Edit staff successfully</string>
+    <string name="editFailed">Edit staff failed</string>
     <string name="editSuccessfully">Edit staff successfully</string>
     <string name="addDepartment">Add department</string>
     <string name="addDepartmentFailed">Name department that were used or null</string>
@@ -41,4 +40,8 @@
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
     <string name="message">Do you really want to log out?</string>
+    <string name="_name">Name not null</string>
+    <string name="_phone">Phone not null</string>
+    <string name="_placeOfBirth">Place of birth not null</string>
+    <string name="_birthDay">Birthday failed</string>
 </resources>

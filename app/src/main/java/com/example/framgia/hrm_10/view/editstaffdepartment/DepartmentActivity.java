@@ -29,6 +29,7 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
     private int mIdImageDepartment;
     private int mIdDepartment;
     private TextView mTextViewUpdateImage;
+    private int mLength;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
 
     private void createData() {
         setEnableViews(true);
-        mIdImageDepartment = Settings.ID_DEPARTMENT_DEFAULT;
+        checkIdImageDepartment();
         switch (mTypeSettings) {
             case Settings.ADD_DEPARTMENT:
                 // TODO
@@ -49,6 +50,15 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
             case Settings.EDIT_DEPARTMENT:
                 showDepartment();
                 break;
+        }
+    }
+
+    private void checkIdImageDepartment() {
+        int idImage = mDbHelper.getDbDepartment().getDepartment(mIdDepartment).getIdImage();
+        for (int i = 0; i < mLength; i++) {
+            if (idImage == Settings.ID_IMAGE_DEPARTMENT[i]) {
+                mIdImageDepartment = i;
+            }
         }
     }
 
@@ -75,6 +85,7 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
         mImageViewUpdateImageDepartment.setOnClickListener(this);
         mImageViewDepartment.setOnClickListener(this);
         mTextViewUpdateImage.setOnClickListener(this);
+        mLength = Settings.ID_IMAGE_DEPARTMENT.length;
     }
 
     @Override
@@ -124,7 +135,7 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
         if (mIdImageDepartment < Settings.ID_IMAGE_DEPARTMENT.length - 1) {
             mIdImageDepartment++;
         } else {
-            mIdImageDepartment = Settings.ID_DEPARTMENT_DEFAULT;
+            mIdImageDepartment = Settings.ID_DEPARTMENT_NULL;
         }
         drawImage();
     }
