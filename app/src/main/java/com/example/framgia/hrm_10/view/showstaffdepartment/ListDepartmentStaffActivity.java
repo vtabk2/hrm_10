@@ -80,8 +80,13 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
             case DataRecyclerViewAdapter.TYPE_STAFF:
                 int id = mStaffList.get(mPosition).getId();
                 Staff staff = mDbHelper.getDbStaff().getStaff(id);
-                mStaffList.set(mPosition, staff);
-                mAdapterRecyclerView.notifyItemChanged(mPosition);
+                if (staff.getIdPositionInCompany() == mIdDepartment) {
+                    mStaffList.set(mPosition, staff);
+                    mAdapterRecyclerView.notifyItemChanged(mPosition);
+                } else {
+                    mStaffList.remove(mPosition);
+                    mAdapterRecyclerView.notifyItemRemoved(mPosition);
+                }
                 break;
         }
     }
@@ -226,26 +231,42 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 startActivity(intent);
                 break;
             case R.id.logOut:
-                AlertDialog myAlertDialog = createAlertDialog();
+                AlertDialog myAlertDialog = createAlertDialog(Settings.LOGOUT);
                 myAlertDialog.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private AlertDialog createAlertDialog() {
+    private AlertDialog createAlertDialog(final int type) {
+        CharSequence mess;
+        switch (type) {
+            case Settings.EXIT:
+                mess = getText(R.string.messageExit);
+                break;
+            default:
+                mess = getText(R.string.message);
+                break;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getText(R.string.message))
+        builder.setMessage(mess)
                 .setCancelable(false)
                 .setPositiveButton(getText(R.string.ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                                editor.remove(Settings.KEY_ID_ACCOUNT);
-                                editor.commit();
-                                Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(myIntent);
-                                finish();
+                                switch (type) {
+                                    case Settings.EXIT:
+                                        finish();
+                                        break;
+                                    default:
+                                        SharedPreferences.Editor editor = mSharedPreferences.edit();
+                                        editor.remove(Settings.KEY_ID_ACCOUNT);
+                                        editor.commit();
+                                        Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+                                        startActivity(myIntent);
+                                        finish();
+                                        break;
+                                }
                             }
                         })
                 .setNeutralButton(getText(R.string.cancel), null);
@@ -257,7 +278,8 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
     public void onBackPressed() {
         switch (mTypeDataRecyclerViewAdapter) {
             case DataRecyclerViewAdapter.TYPE_DEPARTMENT:
-                // nothing
+                AlertDialog myAlertDialog = createAlertDialog(Settings.EXIT);
+                myAlertDialog.show();
                 break;
             default:
                 super.onBackPressed();
