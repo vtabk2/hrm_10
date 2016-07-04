@@ -6,6 +6,7 @@ package com.example.framgia.hrm_10.model.data;
 public class Staff {
     private int mId;
     private String mName;
+    private String mUnsignedName;
     private String mPlaceOfBirth;
     private String mBirthday;
     private String mPhone;
@@ -13,11 +14,12 @@ public class Staff {
     private int mIdStatus;
     private int mLeftJob;
 
-    public Staff(int id, String name, String placeOfBirth,
+    public Staff(int id, String name, String unsignedName, String placeOfBirth,
                  String birthday, String phone, int idPositionInCompany,
                  int idStatus, int leftJob) {
         this.mId = id;
         this.mName = name;
+        this.mUnsignedName = unsignedName;
         this.mPlaceOfBirth = placeOfBirth;
         this.mBirthday = birthday;
         this.mPhone = phone;
@@ -26,10 +28,11 @@ public class Staff {
         this.mLeftJob = leftJob;
     }
 
-    public Staff(String name, String placeOfBirth,
+    public Staff(String name, String unsignedName, String placeOfBirth,
                  String birthday, String phone, int idPositionInCompany,
                  int idStatus, int leftJob) {
         this.mName = name;
+        this.mUnsignedName = unsignedName;
         this.mPlaceOfBirth = placeOfBirth;
         this.mBirthday = birthday;
         this.mPhone = phone;
@@ -44,6 +47,10 @@ public class Staff {
 
     public String getName() {
         return mName;
+    }
+
+    public String getUnsignedName() {
+        return mUnsignedName;
     }
 
     public String getPlaceOfBirth() {

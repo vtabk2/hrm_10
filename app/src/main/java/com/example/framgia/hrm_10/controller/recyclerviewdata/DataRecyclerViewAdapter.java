@@ -22,6 +22,7 @@ import java.util.List;
 public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerViewAdapter.MyViewHolder> {
     public static final int TYPE_DEPARTMENT = 0;
     public static final int TYPE_STAFF = 1;
+    private static final String ID = "ID:";
     private List<Departments> mDepartmentList;
     private List<Staff> mStaffList;
     private int mType;
@@ -66,8 +67,8 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.mImage.setImageDrawable(null);
-        Glide.clear(holder.mImage);
+        holder.mImageViewDepartment.setImageDrawable(null);
+        Glide.clear(holder.mImageViewDepartment);
         switch (mType) {
             case TYPE_DEPARTMENT:
                 Departments departments = mDepartmentList.get(position);
@@ -75,17 +76,18 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
                         .thumbnail(0.5f)
                         .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.mImage);
-                holder.mName.setText(departments.getName());
+                        .into(holder.mImageViewDepartment);
+                holder.mTextViewName.setText(departments.getName());
                 break;
             case TYPE_STAFF:
                 Staff staff = mStaffList.get(position);
-                holder.mName.setText(staff.getName());
+                holder.mTextViewName.setText(staff.getName());
                 Glide.with(holder.itemView.getContext()).load(R.drawable.img_staff)
                         .thumbnail(0.5f)
                         .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.mImage);
+                        .into(holder.mImageViewDepartment);
+                holder.mTextViewID.setText(ID + staff.getId());
                 break;
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -120,19 +122,21 @@ public class DataRecyclerViewAdapter extends RecyclerView.Adapter<DataRecyclerVi
     }
 
     protected class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView mName;
-        public ImageView mImage;
+        public TextView mTextViewName;
+        public ImageView mImageViewDepartment;
+        public TextView mTextViewID;
 
         public MyViewHolder(final View view) {
             super(view);
             switch (mType) {
                 case TYPE_DEPARTMENT:
-                    mName = (TextView) view.findViewById(R.id.text_name);
-                    mImage = (ImageView) view.findViewById(R.id.image_department);
+                    mTextViewName = (TextView) view.findViewById(R.id.text_name);
+                    mImageViewDepartment = (ImageView) view.findViewById(R.id.image_department);
                     break;
                 case TYPE_STAFF:
-                    mName = (TextView) view.findViewById(R.id.text_nameStaff);
-                    mImage = (ImageView) view.findViewById(R.id.image_staff);
+                    mTextViewName = (TextView) view.findViewById(R.id.text_nameStaff);
+                    mImageViewDepartment = (ImageView) view.findViewById(R.id.image_staff);
+                    mTextViewID = (TextView) view.findViewById(R.id.text_idStaff);
                     break;
             }
         }

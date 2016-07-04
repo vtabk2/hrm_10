@@ -160,13 +160,13 @@ public class DepartmentActivity extends AppCompatActivity implements View.OnClic
         if (mDbHelper.getDbDepartment().checkDepartment(mEditTextNameDepartment.getText().toString(),
                 mIdDepartment) && edit) {
             Departments departments = new Departments(mIdDepartment,
-                    mEditTextNameDepartment.getText().toString(),
+                    mEditTextNameDepartment.getText().toString().trim(),
                     Settings.ID_IMAGE_DEPARTMENT[mIdImageDepartment]);
             return mDbHelper.getDbDepartment().updateDepartment(departments);
         } else if (mDbHelper.getDbDepartment().checkDepartment(mEditTextNameDepartment.getText().toString(),
                 mIdDepartment) && !edit) {
             Departments departments = new Departments(
-                    mEditTextNameDepartment.getText().toString(),
+                    mEditTextNameDepartment.getText().toString().trim(),
                     Settings.ID_IMAGE_DEPARTMENT[mIdImageDepartment]);
             return mDbHelper.getDbDepartment().addDepartment(departments);
         } else {

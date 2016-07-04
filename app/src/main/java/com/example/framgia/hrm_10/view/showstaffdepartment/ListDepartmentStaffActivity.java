@@ -78,16 +78,25 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
                 mAdapterRecyclerView.notifyDataSetChanged();
                 break;
             case DataRecyclerViewAdapter.TYPE_STAFF:
-                int id = mStaffList.get(mPosition).getId();
-                Staff staff = mDbHelper.getDbStaff().getStaff(id);
-                if (staff.getIdPositionInCompany() == mIdDepartment) {
-                    mStaffList.set(mPosition, staff);
-                    mAdapterRecyclerView.notifyItemChanged(mPosition);
-                } else {
-                    mStaffList.remove(mPosition);
-                    mAdapterRecyclerView.notifyItemRemoved(mPosition);
+                if (mPosition == Settings.COUNT_NULL) {
+                    mStaffList.clear();
+                    getListStaff(Settings.START_INDEX_DEFAULT);
+                } else if (mStaffList.size() > mPosition) {
+                    getListStaffChanged();
                 }
                 break;
+        }
+    }
+
+    private void getListStaffChanged() {
+        int id = mStaffList.get(mPosition).getId();
+        Staff staff = mDbHelper.getDbStaff().getStaff(id);
+        if (staff.getIdPositionInCompany() == mIdDepartment) {
+            mStaffList.set(mPosition, staff);
+            mAdapterRecyclerView.notifyItemChanged(mPosition);
+        } else {
+            mStaffList.remove(mPosition);
+            mAdapterRecyclerView.notifyItemRemoved(mPosition);
         }
     }
 
@@ -207,11 +216,13 @@ public class ListDepartmentStaffActivity extends AppCompatActivity implements On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mTypeDataRecyclerViewAdapter == DataRecyclerViewAdapter.TYPE_DEPARTMENT) {
-            getMenuInflater().inflate(R.menu.options_menu, menu);
-            MenuItem searchMenuItem = menu.findItem(R.id.search);
-            SearchView searchView = (SearchView) searchMenuItem.getActionView();
-            searchView.setOnQueryTextListener(mSearchViewListener);
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setOnQueryTextListener(mSearchViewListener);
+        if (mTypeDataRecyclerViewAdapter == DataRecyclerViewAdapter.TYPE_STAFF) {
+            menu.findItem(R.id.logOut).setVisible(false);
+            menu.findItem(R.id.addDepartment).setVisible(false);
         }
         return true;
     }

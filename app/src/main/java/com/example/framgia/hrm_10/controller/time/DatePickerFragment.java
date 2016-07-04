@@ -29,7 +29,7 @@ public class DatePickerFragment extends DialogFragment
         int year = Integer.parseInt(arr[YEAR]);
         int month = Integer.parseInt(arr[MONTH]);
         int day = Integer.parseInt(arr[DAY]);
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new DatePickerDialog(getActivity(), this, year, month - 1, day);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {

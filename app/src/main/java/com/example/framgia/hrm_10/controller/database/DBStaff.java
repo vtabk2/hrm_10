@@ -26,6 +26,7 @@ public class DBStaff {
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Settings.KEY_NAME_STAFF, staff.getName());
+        values.put(Settings.KEY_UNSIGNED_NAME_STAFF, staff.getUnsignedName());
         values.put(Settings.KEY_PLACE_OF_BIRTH_STAFF, staff.getPlaceOfBirth());
         values.put(Settings.KEY_BIRTHDAY_STAFF, staff.getBirthday());
         values.put(Settings.KEY_PHONE_STAFF, staff.getPhone());
@@ -41,6 +42,7 @@ public class DBStaff {
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Settings.KEY_NAME_STAFF, staff.getName());
+        values.put(Settings.KEY_UNSIGNED_NAME_STAFF, staff.getUnsignedName());
         values.put(Settings.KEY_PLACE_OF_BIRTH_STAFF, staff.getPlaceOfBirth());
         values.put(Settings.KEY_BIRTHDAY_STAFF, staff.getBirthday());
         values.put(Settings.KEY_PHONE_STAFF, staff.getPhone());
@@ -62,6 +64,7 @@ public class DBStaff {
         if (cursor != null && cursor.moveToFirst()) {
             staff = new Staff(cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STAFF)),
                     cursor.getString(cursor.getColumnIndex(Settings.KEY_NAME_STAFF)),
+                    cursor.getString(cursor.getColumnIndex(Settings.KEY_UNSIGNED_NAME_STAFF)),
                     cursor.getString(cursor.getColumnIndex(Settings.KEY_PLACE_OF_BIRTH_STAFF)),
                     cursor.getString(cursor.getColumnIndex(Settings.KEY_BIRTHDAY_STAFF)),
                     cursor.getString(cursor.getColumnIndex(Settings.KEY_PHONE_STAFF)),
@@ -78,7 +81,6 @@ public class DBStaff {
         List<Staff> staffList = new ArrayList<Staff>();
         String selectQuery = "SELECT  * FROM " + Settings.TABLE_STAFF
                 + " WHERE " + Settings.KEY_ID_POSITION_IN_COMPANY_STAFF + "=?"
-                + " ORDER BY " + Settings.KEY_NAME_STAFF
                 + " LIMIT " + limit
                 + " OFFSET " + start;
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
@@ -87,6 +89,7 @@ public class DBStaff {
             do {
                 Staff staff = new Staff(cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_UNSIGNED_NAME_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_PLACE_OF_BIRTH_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_BIRTHDAY_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_PHONE_STAFF)),
@@ -104,9 +107,8 @@ public class DBStaff {
     public List<Staff> getListStaffByName(int start, String nameStaff, int limit) {
         List<Staff> staffList = new ArrayList<Staff>();
         String selectQuery = "SELECT * FROM " + Settings.TABLE_STAFF
-                + " WHERE " + Settings.KEY_NAME_STAFF
+                + " WHERE " + Settings.KEY_UNSIGNED_NAME_STAFF
                 + " like '%" + nameStaff + "%'"
-                + " ORDER BY " + Settings.KEY_NAME_STAFF
                 + " LIMIT " + limit
                 + " OFFSET " + start;
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
@@ -115,6 +117,7 @@ public class DBStaff {
             do {
                 Staff staff = new Staff(cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_UNSIGNED_NAME_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_PLACE_OF_BIRTH_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_BIRTHDAY_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_PHONE_STAFF)),
@@ -134,7 +137,6 @@ public class DBStaff {
         String selectQuery = "SELECT * FROM " + Settings.TABLE_STAFF
                 + " WHERE " + Settings.KEY_PHONE_STAFF
                 + " like '%" + phone + "%'"
-                + " ORDER BY " + Settings.KEY_NAME_STAFF
                 + " LIMIT " + limit
                 + " OFFSET " + start;
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
@@ -143,6 +145,7 @@ public class DBStaff {
             do {
                 Staff staff = new Staff(cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_UNSIGNED_NAME_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_PLACE_OF_BIRTH_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_BIRTHDAY_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_PHONE_STAFF)),
@@ -162,6 +165,7 @@ public class DBStaff {
         String selectQuery = "SELECT "
                 + Settings.TABLE_STAFF + "." + Settings.KEY_ID_STAFF + ","
                 + Settings.TABLE_STAFF + "." + Settings.KEY_NAME_STAFF + ","
+                + Settings.TABLE_STAFF + "." + Settings.KEY_UNSIGNED_NAME_STAFF + ","
                 + Settings.TABLE_STAFF + "." + Settings.KEY_PLACE_OF_BIRTH_STAFF + ","
                 + Settings.TABLE_STAFF + "." + Settings.KEY_BIRTHDAY_STAFF + ","
                 + Settings.TABLE_STAFF + "." + Settings.KEY_PHONE_STAFF + ","
@@ -172,7 +176,6 @@ public class DBStaff {
                 + " WHERE " + Settings.TABLE_STAFF + "." + Settings.KEY_ID_POSITION_IN_COMPANY_STAFF + "=" + Settings.TABLE_DEPARTMENT + "." + Settings.KEY_ID_DEPARTMENT
                 + " AND " + Settings.TABLE_DEPARTMENT + "." + Settings.KEY_NAME_DEPARTMENT
                 + " like '%" + nameDepartment + "%'"
-                + " ORDER BY " + Settings.TABLE_STAFF + "." + Settings.KEY_NAME_STAFF
                 + " LIMIT " + limit
                 + " OFFSET " + start;
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
@@ -181,6 +184,7 @@ public class DBStaff {
             do {
                 Staff staff = new Staff(cursor.getInt(cursor.getColumnIndex(Settings.KEY_ID_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_NAME_STAFF)),
+                        cursor.getString(cursor.getColumnIndex(Settings.KEY_UNSIGNED_NAME_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_PLACE_OF_BIRTH_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_BIRTHDAY_STAFF)),
                         cursor.getString(cursor.getColumnIndex(Settings.KEY_PHONE_STAFF)),

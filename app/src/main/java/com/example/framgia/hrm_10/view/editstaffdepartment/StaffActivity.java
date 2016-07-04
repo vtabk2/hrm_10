@@ -3,7 +3,6 @@ package com.example.framgia.hrm_10.view.editstaffdepartment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.framgia.hrm_10.R;
 import com.example.framgia.hrm_10.controller.database.DBHelper;
+import com.example.framgia.hrm_10.controller.database.UnsignedName;
 import com.example.framgia.hrm_10.controller.settings.Settings;
 import com.example.framgia.hrm_10.controller.time.DatePickerFragment;
 import com.example.framgia.hrm_10.model.data.Departments;
@@ -161,7 +161,7 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         mEditTextPhone.setFocusableInTouchMode(enabled);
         mRadioButtonWorking.setClickable(enabled);
         mRadioButtonStop.setClickable(enabled);
-        if(!enabled){
+        if (!enabled) {
             mEditTextName.setBackgroundColor(Color.TRANSPARENT);
             mEditTextPlaceOfBirth.setBackgroundColor(Color.TRANSPARENT);
             mEditTextPhone.setBackgroundColor(Color.TRANSPARENT);
@@ -173,7 +173,7 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
         mTextViewStatus.setVisibility(enabled ? View.INVISIBLE : View.VISIBLE);
         if (add) {
             mTextViewBirthday.setText(R.string.birthdayDefault);
-            mRadioButtonStop.setChecked(add);
+            mRadioButtonWorking.setChecked(add);
         }
     }
 
@@ -239,10 +239,11 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean editStaff() {
         if (checkStaffNull()) {
-            Staff staff = new Staff(mIdStaff, mEditTextName.getText().toString(),
-                    mEditTextPlaceOfBirth.getText().toString(),
-                    mTextViewBirthday.getText().toString(),
-                    mEditTextPhone.getText().toString(),
+            Staff staff = new Staff(mIdStaff, mEditTextName.getText().toString().trim(),
+                    UnsignedName.removeAccent(mEditTextName.getText().toString().trim()),
+                    mEditTextPlaceOfBirth.getText().toString().trim(),
+                    mTextViewBirthday.getText().toString().trim(),
+                    mEditTextPhone.getText().toString().trim(),
                     mDbHelper.getDbDepartment().getIdDepartment(mTextViewPositionInCompany.getText().toString()),
                     mDbHelper.getDbStatus().getStatus(mTextViewStatus.getText().toString()),
                     checkLeftJob());
@@ -253,10 +254,11 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean addStaff() {
         if (checkStaffNull()) {
-            Staff staff = new Staff(mEditTextName.getText().toString(),
-                    mEditTextPlaceOfBirth.getText().toString(),
-                    mTextViewBirthday.getText().toString(),
-                    mEditTextPhone.getText().toString(),
+            Staff staff = new Staff(mEditTextName.getText().toString().trim(),
+                    UnsignedName.removeAccent(mEditTextName.getText().toString()).trim(),
+                    mEditTextPlaceOfBirth.getText().toString().trim(),
+                    mTextViewBirthday.getText().toString().trim(),
+                    mEditTextPhone.getText().toString().trim(),
                     mDbHelper.getDbDepartment().getIdDepartment(mTextViewPositionInCompany.getText().toString()),
                     mDbHelper.getDbStatus().getStatus(mTextViewStatus.getText().toString()), checkLeftJob());
             mDbHelper.getDbStaff().addStaff(staff);
@@ -266,29 +268,28 @@ public class StaffActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean checkStaffNull() {
-        if (TextUtils.isEmpty(mEditTextName.getText().toString())) {
+        if (TextUtils.isEmpty(mEditTextName.getText().toString().trim())) {
             Utility.showToast(getApplicationContext(), getText(R.string._name));
             return false;
-        } else if (TextUtils.isEmpty(mEditTextPhone.getText().toString())) {
+        } else if (TextUtils.isEmpty(mEditTextPhone.getText().toString().trim())) {
             Utility.showToast(getApplicationContext(), getText(R.string._phone));
             return false;
-        } else if (TextUtils.isEmpty(mEditTextPlaceOfBirth.getText().toString())) {
+        } else if (TextUtils.isEmpty(mEditTextPlaceOfBirth.getText().toString().trim())) {
             Utility.showToast(getApplicationContext(), getText(R.string._placeOfBirth));
             return false;
-        } else if (TextUtils.equals(mTextViewBirthday.getText().toString(), getText(R.string.birthdayDefault))) {
+        } else if (Utility.checkBefore(mTextViewBirthday.getText(), getText(R.string.birthdayMin))) {
             Utility.showToast(getApplicationContext(), getText(R.string._birthDay));
             return false;
-        } else if (!TextUtils.isEmpty(mEditTextName.getText().toString())
-                && !TextUtils.isEmpty(mEditTextPlaceOfBirth.getText().toString())
-                && !TextUtils.equals(mTextViewBirthday.getText().toString(), getText(R.string.birthdayDefault))
-                && !TextUtils.isEmpty(mEditTextPhone.getText().toString())) {
+        } else if (!TextUtils.isEmpty(mEditTextName.getText().toString().trim())
+                && !TextUtils.isEmpty(mEditTextPlaceOfBirth.getText().toString().trim())
+                && !TextUtils.isEmpty(mEditTextPhone.getText().toString().trim())) {
             return true;
         }
         return false;
     }
 
     private void showTimePickerDialog(View view) {
-        DialogFragment showTime = (new DatePickerFragment()).setTextViewBirthday(mTextViewBirthday);
+        DatePickerFragment showTime = new DatePickerFragment().setTextViewBirthday(mTextViewBirthday);
         showTime.show(getSupportFragmentManager(), Settings.DATE_PICKER);
     }
 }

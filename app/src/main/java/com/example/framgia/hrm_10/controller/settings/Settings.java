@@ -25,6 +25,7 @@ public class Settings {
     // STAFF Table Columns names
     public static final String KEY_ID_STAFF = "id";
     public static final String KEY_NAME_STAFF = "name";
+    public static final String KEY_UNSIGNED_NAME_STAFF = "unsignedName";
     public static final String KEY_PLACE_OF_BIRTH_STAFF = "placeOfBirth";
     public static final String KEY_BIRTHDAY_STAFF = "birthday";
     public static final String KEY_PHONE_STAFF = "phone";

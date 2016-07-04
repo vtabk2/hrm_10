@@ -18,7 +18,8 @@
     <string name="positionincompany">Position in company</string>
     <string name="status">Status</string>
     <string name="submit">Submit</string>
-    <string name="birthdayDefault">20/06/1900</string>
+    <string name="birthdayDefault">01/01/1980</string>
+    <string name="birthdayMin">31/12/1900</string>
     <string name="rbStoppedWorking">Stopped</string>
     <string name="rbWorking">Working</string>
     <string name="workstatus">Work status</string>
@@ -44,5 +45,5 @@
     <string name="_name">Name not empty</string>
     <string name="_phone">Phone not empty</string>
     <string name="_placeOfBirth">Place of birth not empty</string>
-    <string name="_birthDay">Birthday failed</string>
+    <string name="_birthDay">Birthday too small</string>
 </resources>

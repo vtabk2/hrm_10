@@ -17,6 +17,16 @@
         android:layout_marginLeft="@dimen/image_list_staff_vi_marginLeft" />
 
     <TextView
+        android:id="@+id/text_idStaff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/textid_list_staff_vi_marginLeft"
+        android:layout_marginTop="@dimen/textid_list_staff_vi_marginTop"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
         android:id="@+id/text_nameStaff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

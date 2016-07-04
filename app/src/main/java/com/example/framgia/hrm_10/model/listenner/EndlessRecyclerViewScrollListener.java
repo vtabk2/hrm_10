@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
  * Created by framgia on 27/06/2016.
  */
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
-    public static final int STAFF_PER_PAGE = 10;
+    public static final int STAFF_PER_PAGE = 30;
     private static final int INIT_DEFAULT = 0;
     private int mVisibleThreshold = STAFF_PER_PAGE;
     private int mPreviousTotalItemCount = INIT_DEFAULT;
@@ -41,4 +41,8 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     }
 
     public abstract void onLoadMore(int startIndex);
+
+    public void reset() {
+        mPreviousTotalItemCount = INIT_DEFAULT;
+    }
 }
